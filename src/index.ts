@@ -12,6 +12,7 @@ import { confirmAction } from "./api/confirmations.js";
 import { getOrCreateUser, addActivity } from "./users/store.js";
 import { getOrCreateConversation, appendMessage, createPendingConfirmation } from "./memory/store.js";
 import { buildDailyBriefing } from "./briefing/engine.js";
+import { connectionsResponse } from "./api/connections.js";
 import { listMemories, forgetMemory } from "./memory/semantic.js";
 import { register, login, logout, userFromSession, sessionCookie, clearSessionCookie } from "./auth/store.js";
 
@@ -41,6 +42,7 @@ const server=createServer(async(req,res)=>{
 
     if(req.method==="GET" && url==="/health") return sendJson(res,200,{ok:true,service:"ai-secretary",composioConfigured:Boolean(config.composioApiKey),openRouterConfigured:Boolean(config.openRouterApiKey)});
     if(url.startsWith("/api/me")||url.startsWith("/api/activity")||url.startsWith("/api/tools")) { getOrCreateUser(userId); if(await dashboardResponse(req,res,userId)) return; }
+    if(url.startsWith("/api/connections")) { if(await connectionsResponse(req,res,userId)) return; }
     if(url.startsWith("/api/conversations/")) { if(conversationResponse(req,res,userId)) return; }
     if(url==="/api/memories" && req.method==="GET") return sendJson(res,200,{items:listMemories(userId)});
     if(url.startsWith("/api/memories/") && req.method==="DELETE"){
