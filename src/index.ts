@@ -15,9 +15,9 @@ import { getOrCreateConversation, appendMessage, createPendingConfirmation } fro
 function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown) { res.writeHead(status, {"content-type":"application/json; charset=utf-8"}); res.end(JSON.stringify(body)); }
 async function readJson(req: import("node:http").IncomingMessage) { let body=""; for await (const chunk of req) body+=chunk; return body ? JSON.parse(body) : {}; }
 async function servePublic(res: import("node:http").ServerResponse, path: string) {
-  const safe=path===" /" ? "index.html" : path.replace(/^\/+/, "");
-  const file=join(process.cwd(),"public",safe);
+  const safe=path==="/" ? "index.html" : path.replace(/^\/+/, "");
   if (safe.includes("..")) return false;
+  const file=join(process.cwd(),"public",safe);
   const type={".html":"text/html; charset=utf-8",".css":"text/css; charset=utf-8",".js":"text/javascript; charset=utf-8"}[extname(file)] ?? "application/octet-stream";
   try { const data=await readFile(file); res.writeHead(200,{"content-type":type,"cache-control":"no-cache"}); res.end(data); return true; } catch { return false; }
 }
