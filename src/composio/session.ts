@@ -96,10 +96,17 @@ export async function executeInSecretarySession(
 
   if (connectedAccountId) {
     const account = await resolveConnectedAccount(userId, connectedAccountId);
-    const existing =
+    const existingRaw =
       ((session as any).config?.connectedAccounts as
         | Record<string, string[] | string>
         | undefined) ?? {};
+
+    const existing: Record<string, string[]> = Object.fromEntries(
+      Object.entries(existingRaw).map(([toolkit, value]) => [
+        toolkit,
+        Array.isArray(value) ? value : [value],
+      ]),
+    );
 
     await session.update({
       connectedAccounts: {
