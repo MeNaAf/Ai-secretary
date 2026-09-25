@@ -18,7 +18,7 @@ export type AssistantSession = {
 export type ActivityRecord = {
   id: string;
   userId: string;
-  type: "chat" | "tool" | "confirmation";
+  type: "chat" | "tool" | "confirmation" | "briefing";
   summary: string;
   toolSlug?: string;
   status: "started" | "completed" | "confirmation_required" | "failed";
