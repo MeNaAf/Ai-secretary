@@ -12,6 +12,7 @@ import { confirmAction } from "./api/confirmations.js";
 import { getOrCreateUser, addActivity } from "./users/store.js";
 import { getOrCreateConversation, appendMessage, createPendingConfirmation } from "./memory/store.js";
 import { buildDailyBriefing } from "./briefing/engine.js";
+import { listMemories, forgetMemory } from "./memory/semantic.js";
 
 function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown) { res.writeHead(status, {"content-type":"application/json; charset=utf-8"}); res.end(JSON.stringify(body)); }
 async function readJson(req: import("node:http").IncomingMessage) { let body=""; for await (const chunk of req) body+=chunk; return body ? JSON.parse(body) : {}; }
@@ -30,6 +31,13 @@ const server=createServer(async(req,res)=>{
     if(req.method==="GET" && url==="/health") return sendJson(res,200,{ok:true,service:"ai-secretary",composioConfigured:Boolean(config.composioApiKey),openRouterConfigured:Boolean(config.openRouterApiKey)});
     if(url.startsWith("/api/me")||url.startsWith("/api/activity")||url.startsWith("/api/tools")) { getOrCreateUser(userId); if(await dashboardResponse(req,res,userId)) return; }
     if(url.startsWith("/api/conversations/")) { if(conversationResponse(req,res,userId)) return; }
+    if(url==="/api/memories" && req.method==="GET") return sendJson(res,200,{items:listMemories(userId)});
+    if(url.startsWith("/api/memories/") && req.method==="DELETE"){
+      const memoryId=url.slice("/api/memories/".length);
+      if(!memoryId)return sendJson(res,400,{error:"memory id is required"});
+      const removed=forgetMemory(userId,memoryId);
+      return sendJson(res,removed?200:404,removed?{ok:true}:{error:"Memory not found"});
+    }
     if(req.method==="POST" && url==="/api/chat") {
       const body=await readJson(req),message=typeof body.message==="string"?body.message:"",bodyUserId=typeof body.userId==="string"?body.userId:userId;
       const conversation=getOrCreateConversation(bodyUserId,typeof body.conversationId==="string"?body.conversationId:undefined),sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
