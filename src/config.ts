@@ -9,5 +9,6 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) {
 export const config = {
   port,
   openRouterApiKey: process.env.OPENROUTER_API_KEY ?? "",
-  openRouterModel: process.env.OPENROUTER_MODEL ?? "openrouter/free"
+  openRouterModel: process.env.OPENROUTER_MODEL ?? "openrouter/free",
+  composioApiKey: process.env.COMPOSIO_API_KEY ?? ""
 };

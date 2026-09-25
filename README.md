@@ -2,64 +2,75 @@
 
 AI-powered personal and SME operations assistant.
 
-## Current foundation
+## Architecture
 
-- TypeScript + Node.js
-- OpenRouter as the AI gateway
-- Composio tool catalog for connected services
-- Safe action planning with confirmation gates
-- HTTP API for chat and planning
+User -> AI Secretary API -> OpenRouter (reasoning) -> Composio (connected tools) -> Gmail / Calendar / Drive / Sheets / Notion / Slack / HubSpot / ClickUp
+
+The application uses Composio's TypeScript SDK for server-side tool execution. Composio keeps provider credentials server-side and executes tools using the connected account selected for the user.
+
+## Current capabilities
+
+- OpenRouter AI chat
+- Secretary planning layer
+- Composio tool catalog
+- Server-side Composio tool executor
+- Read-first safety model
+- Explicit confirmation required for high-impact actions
 - GitHub Actions CI
-
-## Connected-service capability map
-
-The assistant is prepared for:
-
-- Gmail — search, read threads, create drafts, send only after confirmation
-- Google Calendar — list, check availability, create/update/delete with confirmation
-- Google Drive — search and read files
-- Google Sheets — read and write spreadsheet data with confirmation
-- Notion — search and read knowledge
-- Slack — search and read conversations
-- HubSpot — search CRM records
-- ClickUp — update tasks with confirmation
 
 ## API
 
 ### Health
 
-`GET /health`
+GET `/health`
 
 ### Chat
 
-`POST /api/chat`
+POST `/api/chat`
 
 ```json
 {
-  "message": "Explain what I should focus on today."
+  "message": "Help me prioritize today."
 }
 ```
 
-### Secretary planner
+### Plan
 
-`POST /api/plan`
+POST `/api/plan`
 
 ```json
 {
-  "message": "Find my unread client emails and tell me which ones need attention."
+  "message": "Find the emails that need my attention."
 }
 ```
 
-The planner returns a tool-aware plan. External actions are not falsely reported as completed.
+### Execute a known Composio tool
 
-## Security model
+POST `/api/tool/execute`
 
-Read-first, act-second.
+```json
+{
+  "toolSlug": "GMAIL_GET_PROFILE",
+  "userId": "your-app-user-id",
+  "arguments": {}
+}
+```
 
-The assistant should gather context with read-only tools first. High-impact mutations such as sending email, deleting events, changing business records, or writing important data require explicit confirmation.
+For a mutating tool, the request must additionally contain `"confirmed": true`.
 
-## Secrets
+## Environment variables
 
-Never commit a real API key.
+```text
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL=openrouter/free
+COMPOSIO_API_KEY=
+PORT=3000
+```
 
-For local development, create a local `.env` file from `.env.example`. For GitHub Actions and deployments, use encrypted environment secrets.
+Never commit real secrets. Store them in GitHub/hosting encrypted secrets.
+
+## Important
+
+The Composio `userId` is the application user's identity in your Composio project. It should be stable per user. Connected accounts are selected by Composio for that user, or by explicit connected account ID when multiple accounts exist.
+
+The next application layer should add authentication and a database so each SME/personal user gets an isolated userId and their own connected accounts.
