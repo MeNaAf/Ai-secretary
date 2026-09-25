@@ -16,8 +16,39 @@ export type DailyBriefingResult = {
   sessionId?: string;
 };
 
-function rfc3339(date: Date) {
+function iso(date: Date) {
   return date.toISOString();
+}
+
+function localDateKey(date: Date, timeZone: string) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.filter(part => part.type !== "literal").map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function zonedMidnightUtc(dateKey: string, timeZone: string) {
+  const guess = Date.parse(`${dateKey}T00:00:00Z`);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    timeZoneName: "longOffset",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date(guess));
+  const offsetPart = parts.find(part => part.type === "timeZoneName")?.value ?? "GMT";
+  const match = offsetPart.match(/^GMT([+-])(\d{2}):(\d{2})$/);
+  const offsetMinutes = match
+    ? (Number(match[2]) * 60 + Number(match[3])) * (match[1] === "+" ? 1 : -1)
+    : 0;
+  return new Date(guess - offsetMinutes * 60_000);
 }
 
 function compact(value: unknown, max = 6000) {
@@ -87,10 +118,10 @@ export async function buildDailyBriefing(
   const profile = getOrCreateUser(userId);
   const timeZone = profile.timezone || "Africa/Johannesburg";
 
-  const start = new Date(now);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(start);
-  end.setDate(end.getDate() + 1);
+  const todayKey = localDateKey(now, timeZone);
+  const start = zonedMidnightUtc(todayKey, timeZone);
+  const tomorrowKey = localDateKey(new Date(start.getTime() + 36 * 60 * 60 * 1000), timeZone);
+  const end = zonedMidnightUtc(tomorrowKey, timeZone);
 
   let sessionId = options.sessionId;
   const items: BriefingItem[] = [];
@@ -108,8 +139,8 @@ export async function buildDailyBriefing(
 
   const calendar = await readTool(userId, "GOOGLECALENDAR_EVENTS_LIST", {
     calendarId: "primary",
-    timeMin: rfc3339(start),
-    timeMax: rfc3339(end),
+    timeMin: iso(start),
+    timeMax: iso(end),
     orderBy: "startTime",
     singleEvents: true,
     showDeleted: false,
@@ -119,7 +150,7 @@ export async function buildDailyBriefing(
   sessionId = addRead(items, "Google Calendar", "calendar", calendar) ?? sessionId;
 
   const slack = await readTool(userId, "SLACK_SEARCH_ALL", {
-    query: "after:" + start.toISOString().slice(0, 10),
+    query: "after:" + todayKey,
     page: 1,
     count: 20,
     sort: "timestamp",
@@ -141,7 +172,7 @@ export async function buildDailyBriefing(
   sessionId = addRead(items, "HubSpot", "crm", crm) ?? sessionId;
 
   const evidence = items
-    .map((item) => {
+    .map(item => {
       const status = item.status === "unavailable"
         ? `UNAVAILABLE: ${item.error}`
         : compact(item.data);
