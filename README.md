@@ -2,54 +2,27 @@
 
 AI-powered personal and SME operations assistant.
 
-## MVP foundation
+## Current foundation
 
 - TypeScript + Node.js
-- OpenRouter as the AI model gateway
-- Secure environment variables
-- HTTP API with health and chat endpoints
-- Designed to connect to Gmail, Calendar, Drive, Sheets, Notion, Slack, HubSpot, ClickUp and other tools through Composio
+- OpenRouter as the AI gateway
+- Composio tool catalog for connected services
+- Safe action planning with confirmation gates
+- HTTP API for chat and planning
+- GitHub Actions CI
 
-## Project structure
+## Connected-service capability map
 
-```
-src/
-  ai/
-    openrouter.ts
-  config.ts
-  index.ts
-  types.ts
-.env.example
-.gitignore
-package.json
-tsconfig.json
-.github/workflows/ci.yml
-```
+The assistant is prepared for:
 
-## Run locally
-
-1. Install Node.js 20+.
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Copy the example environment file:
-
-```bash
-cp .env.example .env
-```
-
-4. Put your OpenRouter key in your local `.env` file. Never commit it.
-
-5. Start development:
-
-```bash
-npm run dev
-```
-
-The API starts on port 3000 by default.
+- Gmail — search, read threads, create drafts, send only after confirmation
+- Google Calendar — list, check availability, create/update/delete with confirmation
+- Google Drive — search and read files
+- Google Sheets — read and write spreadsheet data with confirmation
+- Notion — search and read knowledge
+- Slack — search and read conversations
+- HubSpot — search CRM records
+- ClickUp — update tasks with confirmation
 
 ## API
 
@@ -61,18 +34,32 @@ The API starts on port 3000 by default.
 
 `POST /api/chat`
 
-Body:
-
 ```json
 {
-  "message": "What should I focus on today?"
+  "message": "Explain what I should focus on today."
 }
 ```
 
-The production assistant will later add authenticated user context and Composio actions before taking external actions.
+### Secretary planner
 
-## Security
+`POST /api/plan`
 
-- Real API keys belong in GitHub Secrets or the hosting provider's encrypted environment variables.
-- Local secrets belong in `.env`, which is gitignored.
-- Never paste API keys into source code, README files, issues, or chat.
+```json
+{
+  "message": "Find my unread client emails and tell me which ones need attention."
+}
+```
+
+The planner returns a tool-aware plan. External actions are not falsely reported as completed.
+
+## Security model
+
+Read-first, act-second.
+
+The assistant should gather context with read-only tools first. High-impact mutations such as sending email, deleting events, changing business records, or writing important data require explicit confirmation.
+
+## Secrets
+
+Never commit a real API key.
+
+For local development, create a local `.env` file from `.env.example`. For GitHub Actions and deployments, use encrypted environment secrets.
