@@ -1,35 +1,28 @@
 # AI Secretary
 
-AI Secretary is an AI-powered personal and SME operations assistant.
+AI-powered personal and SME operations assistant.
 
-## Architecture
+## Runtime architecture
 
 ```
 User
-  ↓
+ ↓
 AI Secretary API
-  ↓
+ ↓
 OpenRouter
-  ↓
-Composio Session (scoped to the application user)
-  ↓
+ ↓
+Tool-calling agent loop
+ ↓
+Composio user session
+ ↓
 Gmail / Calendar / Drive / Sheets / Notion / Slack / HubSpot / ClickUp
 ```
 
-## Current foundation
+The agent can now decide when to use a connected read-only tool, execute it through the user's Composio session, feed the result back to the model, and continue until it can answer.
 
-- TypeScript + Node.js
-- OpenRouter as the model gateway
-- Composio for connected-app authentication and tool execution
-- Session-scoped Composio execution so connected accounts are isolated by `userId`
-- Confirmation gates for mutating actions
-- GitHub Actions CI
-
-Composio sessions are the runtime boundary for a user's connected accounts and tool access. The application should use a stable database-backed user ID in production and persist the Composio session ID for reuse. citeturn0search8turn0search9
+Mutating tools remain behind a confirmation gate.
 
 ## Environment
-
-Copy `.env.example` to `.env` for local development:
 
 ```
 OPENROUTER_API_KEY=
@@ -38,56 +31,38 @@ COMPOSIO_API_KEY=
 PORT=3000
 ```
 
-Never commit `.env` or API keys.
-
-## Run
-
-```bash
-npm install
-npm run build
-npm run dev
-```
+Never commit API keys or `.env`.
 
 ## API
-
-### Health
-
-`GET /health`
-
-### Chat
 
 `POST /api/chat`
 
 ```json
 {
   "userId": "user_123",
-  "message": "What do I have today?"
+  "message": "What do I have today?",
+  "sessionId": "optional-existing-session"
 }
 ```
 
-### Planning
+The response includes a `sessionId` that the frontend should persist for the user.
 
-`POST /api/plan`
+`POST /api/plan` remains available for explicit planning.
 
-### Tool execution
+`POST /api/tool/execute` remains available for controlled direct execution.
 
-`POST /api/tool/execute`
+## Build
 
-Mutating tools require:
-
-```json
-{
-  "confirmed": true
-}
+```bash
+npm install
+npm run build
 ```
 
-A successful execution returns a `sessionId`. Send that ID on later tool calls when reusing the same Composio session.
+## Next layers
 
-## Next build layer
-
-1. Real user authentication
-2. Persistent database user IDs and session IDs
-3. Connection-management UI
-4. OpenRouter tool-calling loop
-5. Per-user memory and audit log
-6. Daily briefing and scheduled workflows
+1. Real authentication and database-backed users
+2. Connection-management UI
+3. Exact Composio tool schemas for model function parameters
+4. Per-user memory and audit logs
+5. Daily briefings and scheduled workflows
+6. Voice interface

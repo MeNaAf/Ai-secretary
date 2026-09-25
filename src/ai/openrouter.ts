@@ -3,13 +3,28 @@ import type { ChatMessage } from "../types.js";
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-const SYSTEM_PROMPT =
-  "You are AI Secretary, a concise and proactive personal and SME operations assistant. " +
-  "Help users organize work, understand priorities, and prepare actions. " +
-  "Never claim that an external action happened unless a connected tool confirms it. " +
-  "Ask for confirmation before high-impact external actions.";
+type ToolDefinition = {
+  type: "function";
+  function: {
+    name: string;
+    description: string;
+    parameters: Record<string, unknown>;
+  };
+};
 
-export async function askAI(messages: ChatMessage[]): Promise<string> {
+export type OpenRouterResponse = {
+  content: string;
+  toolCalls: Array<{
+    id: string;
+    name: string;
+    arguments: Record<string, unknown>;
+  }>;
+};
+
+export async function askAI(
+  messages: ChatMessage[],
+  tools: ToolDefinition[] = []
+): Promise<OpenRouterResponse> {
   if (!config.openRouterApiKey) {
     throw new Error("OPENROUTER_API_KEY is not configured.");
   }
@@ -17,28 +32,52 @@ export async function askAI(messages: ChatMessage[]): Promise<string> {
   const response = await fetch(OPENROUTER_URL, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${config.openRouterApiKey}`,
+      Authorization: `Bearer ${config.openRouterApiKey}`,
       "Content-Type": "application/json",
       "HTTP-Referer": "http://localhost:3000",
       "X-Title": "AI Secretary"
     },
     body: JSON.stringify({
       model: config.openRouterModel,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages
-      ]
+      messages,
+      tools: tools.length ? tools : undefined,
+      tool_choice: tools.length ? "auto" : undefined
     })
   });
 
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`OpenRouter request failed (${response.status}): ${errorText}`);
+    throw new Error(`OpenRouter request failed (${response.status}): ${await response.text()}`);
   }
 
-  const data = (await response.json()) as {
-    choices?: Array<{ message?: { content?: string | null } }>;
+  const data = await response.json() as {
+    choices?: Array<{
+      message?: {
+        content?: string | null;
+        tool_calls?: Array<{
+          id?: string;
+          function?: {
+            name?: string;
+            arguments?: string;
+          };
+        }>;
+      };
+    }>;
   };
 
-  return data.choices?.[0]?.message?.content ?? "";
+  const message = data.choices?.[0]?.message;
+  const toolCalls = (message?.tool_calls ?? []).flatMap((call) => {
+    if (!call.id || !call.function?.name) return [];
+    let args: Record<string, unknown> = {};
+    try {
+      args = call.function.arguments ? JSON.parse(call.function.arguments) : {};
+    } catch {
+      throw new Error(`Invalid JSON arguments returned for tool ${call.function.name}`);
+    }
+    return [{ id: call.id, name: call.function.name, arguments: args }];
+  });
+
+  return {
+    content: message?.content ?? "",
+    toolCalls
+  };
 }
