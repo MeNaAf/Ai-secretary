@@ -23,22 +23,22 @@ export async function runTool(request: ToolExecutionRequest) {
       tool: definition.name,
       toolSlug: definition.slug,
       message: `Confirmation required before running ${definition.name}.`,
-      sessionId: request.sessionId
+      sessionId: request.sessionId,
     };
   }
 
-  const arguments_ = {...(request.arguments ?? {})};
+  const arguments_ = { ...(request.arguments ?? {}) };
 
-  // Tool schemas may expose user_id as a required parameter. It is safe to
-  // provide it because this value always comes from the authenticated session,
-  // never from the client/model request.
-  if ("user_id" in arguments_) arguments_.user_id = request.userId;
+  if ("user_id" in arguments_) {
+    arguments_.user_id = request.userId;
+  }
 
   const execution = await executeInSecretarySession(
     request.userId,
     request.toolSlug,
     arguments_,
-    request.sessionId
+    request.sessionId,
+    request.connectedAccountId,
   );
 
   return {
@@ -46,6 +46,6 @@ export async function runTool(request: ToolExecutionRequest) {
     tool: definition.name,
     toolSlug: definition.slug,
     sessionId: execution.sessionId,
-    result: execution.result
+    result: execution.result,
   };
 }
