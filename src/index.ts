@@ -13,8 +13,9 @@ import { getOrCreateUser, addActivity } from "./users/store.js";
 import { getOrCreateConversation, appendMessage, createPendingConfirmation } from "./memory/store.js";
 import { buildDailyBriefing } from "./briefing/engine.js";
 import { listMemories, forgetMemory } from "./memory/semantic.js";
+import { register, login, logout, userFromSession, sessionCookie, clearSessionCookie } from "./auth/store.js";
 
-function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown) { res.writeHead(status, {"content-type":"application/json; charset=utf-8"}); res.end(JSON.stringify(body)); }
+function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown, headers: Record<string,string> = {}) { res.writeHead(status, {"content-type":"application/json; charset=utf-8", ...headers}); res.end(JSON.stringify(body)); }
 async function readJson(req: import("node:http").IncomingMessage) { let body=""; for await (const chunk of req) body+=chunk; return body ? JSON.parse(body) : {}; }
 async function servePublic(res: import("node:http").ServerResponse, path: string) {
   const safe=path==="/" ? "index.html" : path.replace(/^\/+/, "");
@@ -27,7 +28,15 @@ const server=createServer(async(req,res)=>{
   try {
     const url=req.url??"";
     if(req.method==="GET" && (url==="/" || url.startsWith("/styles.css") || url.startsWith("/app.js"))) { if(await servePublic(res,new URL(url,"http://localhost").pathname)) return; }
-    const userId=typeof req.headers["x-user-id"]==="string"?req.headers["x-user-id"]:"local-dev-user";
+    const cookies=typeof req.headers.cookie==="string"?Object.fromEntries(req.headers.cookie.split(";").map(v=>v.trim().split("=")).filter(v=>v.length===2)):{};
+    const authenticated=userFromSession(cookies.ai_secretary_session);
+    const devIdentityAllowed=process.env.AI_SECRETARY_ALLOW_DEV_IDENTITY==="true";
+    const userId=authenticated?.id ?? (devIdentityAllowed && typeof req.headers["x-user-id"]==="string"?req.headers["x-user-id"]:"");
+    if(req.method==="POST" && url==="/api/auth/register"){const body=await readJson(req);try{register(typeof body.email==="string"?body.email:"",typeof body.password==="string"?body.password:"");const auth=login(typeof body.email==="string"?body.email:"",typeof body.password==="string"?body.password:"");return sendJson(res,201,{user:auth.user},{"set-cookie":sessionCookie(auth.sessionId)})}catch(error){return sendJson(res,400,{error:error instanceof Error?error.message:"Registration failed"})}}
+    if(req.method==="POST" && url==="/api/auth/login"){const body=await readJson(req);try{const auth=login(typeof body.email==="string"?body.email:"",typeof body.password==="string"?body.password:"");return sendJson(res,200,{user:auth.user},{"set-cookie":sessionCookie(auth.sessionId)})}catch(error){return sendJson(res,401,{error:error instanceof Error?error.message:"Invalid email or password"})}}
+    if(req.method==="POST" && url==="/api/auth/logout"){logout(cookies.ai_secretary_session);return sendJson(res,200,{ok:true},{"set-cookie":clearSessionCookie()})}
+    if(req.method==="GET" && url==="/api/auth/me")return sendJson(res,200,{authenticated:Boolean(authenticated),user:authenticated??null});
+    if(!userId)return sendJson(res,401,{error:"Authentication required."});
     if(req.method==="GET" && url==="/health") return sendJson(res,200,{ok:true,service:"ai-secretary",composioConfigured:Boolean(config.composioApiKey),openRouterConfigured:Boolean(config.openRouterApiKey)});
     if(url.startsWith("/api/me")||url.startsWith("/api/activity")||url.startsWith("/api/tools")) { getOrCreateUser(userId); if(await dashboardResponse(req,res,userId)) return; }
     if(url.startsWith("/api/conversations/")) { if(conversationResponse(req,res,userId)) return; }
