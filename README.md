@@ -2,13 +2,31 @@
 
 AI-powered personal and SME operations assistant.
 
-## Runtime
+## Current architecture
 
-User → AI Secretary → OpenRouter tool calling → Composio user session → connected apps.
+User → API → OpenRouter → tool calling → Composio → connected apps.
 
-The agent now passes structured parameter schemas to OpenRouter instead of exposing tools as empty objects. This reduces malformed tool calls and makes the assistant aware of required IDs and fields.
+### Current foundation
 
-Read-only actions can execute automatically. Actions that change external data require confirmation.
+- Structured OpenRouter tool calling
+- Composio-backed connected-app execution
+- Read-only automatic actions
+- Confirmation gate for mutations
+- User profile foundation
+- Assistant activity/audit foundation
+- Dashboard API endpoints
+
+## Development endpoints
+
+- GET /health
+- GET /api/me
+- GET /api/activity
+- GET /api/tools
+- POST /api/chat
+- POST /api/plan
+- POST /api/tool/execute
+
+For local development, user identity can be supplied with the `x-user-id` header. This is NOT production authentication.
 
 ## Environment
 
@@ -19,25 +37,13 @@ PORT=3000
 
 Never commit API keys or .env.
 
-## API
-
-POST /api/chat
-
-{
-  "userId": "user_123",
-  "message": "What do I have today?",
-  "sessionId": "optional-existing-session"
-}
-
-POST /api/plan
-
-POST /api/tool/execute
-
 ## Next layers
 
-1. Real authentication and database-backed users
-2. Connection-management UI
-3. Exact schema validation against every live Composio action
-4. Per-user memory and audit logs
-5. Daily briefings and scheduled workflows
-6. Voice interface
+1. Persistent database
+2. Real authentication
+3. Connection-management UI
+4. Exact live schema validation for every Composio action
+5. Memory and conversation persistence
+6. Dashboard frontend
+7. Daily briefings and scheduled workflows
+8. Voice interface
