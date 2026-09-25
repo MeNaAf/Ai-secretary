@@ -9,6 +9,8 @@ Use connected tools when they can answer the user's request. Never invent emails
 
 Read-only tools may be used to gather context. Mutating actions require explicit user confirmation. If a mutating tool is requested but confirmation has not been provided, explain what will happen and ask for confirmation.
 
+When calling a tool, use only parameters defined by its schema. If a required ID is missing, search for it instead of inventing one.
+
 After a tool executes, use its actual result. Never claim an action succeeded unless the tool returned success.
 
 Be concise, useful, and proactive.`;
@@ -18,10 +20,7 @@ const tools = TOOL_CATALOG.map((tool) => ({
   function: {
     name: tool.slug,
     description: `${tool.name} [${tool.category}]`,
-    parameters: {
-      type: "object",
-      additionalProperties: true
-    }
+    parameters: tool.parameters
   }
 }));
 
@@ -37,10 +36,7 @@ export async function runAgent(userId: string, message: string, sessionId?: stri
     const response = await askAI(messages, tools);
 
     if (!response.toolCalls.length) {
-      return {
-        response: response.content,
-        sessionId: currentSessionId
-      };
+      return { response: response.content, sessionId: currentSessionId };
     }
 
     messages.push({
@@ -52,10 +48,7 @@ export async function runAgent(userId: string, message: string, sessionId?: stri
       const definition = TOOL_CATALOG.find((item) => item.slug === call.name);
 
       if (!definition) {
-        messages.push({
-          role: "tool",
-          content: JSON.stringify({ error: "Tool is not allowed." })
-        });
+        messages.push({ role: "tool", content: JSON.stringify({ error: "Tool is not allowed." }) });
         continue;
       }
 
@@ -65,7 +58,8 @@ export async function runAgent(userId: string, message: string, sessionId?: stri
           content: JSON.stringify({
             status: "confirmation_required",
             tool: definition.name,
-            toolSlug: definition.slug
+            toolSlug: definition.slug,
+            arguments: call.arguments
           })
         });
         continue;

@@ -2,67 +2,42 @@
 
 AI-powered personal and SME operations assistant.
 
-## Runtime architecture
+## Runtime
 
-```
-User
- ↓
-AI Secretary API
- ↓
-OpenRouter
- ↓
-Tool-calling agent loop
- ↓
-Composio user session
- ↓
-Gmail / Calendar / Drive / Sheets / Notion / Slack / HubSpot / ClickUp
-```
+User → AI Secretary → OpenRouter tool calling → Composio user session → connected apps.
 
-The agent can now decide when to use a connected read-only tool, execute it through the user's Composio session, feed the result back to the model, and continue until it can answer.
+The agent now passes structured parameter schemas to OpenRouter instead of exposing tools as empty objects. This reduces malformed tool calls and makes the assistant aware of required IDs and fields.
 
-Mutating tools remain behind a confirmation gate.
+Read-only actions can execute automatically. Actions that change external data require confirmation.
 
 ## Environment
 
-```
 OPENROUTER_API_KEY=
 OPENROUTER_MODEL=openrouter/free
 COMPOSIO_API_KEY=
 PORT=3000
-```
 
-Never commit API keys or `.env`.
+Never commit API keys or .env.
 
 ## API
 
-`POST /api/chat`
+POST /api/chat
 
-```json
 {
   "userId": "user_123",
   "message": "What do I have today?",
   "sessionId": "optional-existing-session"
 }
-```
 
-The response includes a `sessionId` that the frontend should persist for the user.
+POST /api/plan
 
-`POST /api/plan` remains available for explicit planning.
-
-`POST /api/tool/execute` remains available for controlled direct execution.
-
-## Build
-
-```bash
-npm install
-npm run build
-```
+POST /api/tool/execute
 
 ## Next layers
 
 1. Real authentication and database-backed users
 2. Connection-management UI
-3. Exact Composio tool schemas for model function parameters
+3. Exact schema validation against every live Composio action
 4. Per-user memory and audit logs
 5. Daily briefings and scheduled workflows
 6. Voice interface
