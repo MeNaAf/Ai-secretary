@@ -8,6 +8,7 @@ export type ToolExecutionRequest = {
   connectedAccountId?: string;
   confirmed?: boolean;
   sessionId?: string;
+  connectedAccounts?: Record<string, string>;
 };
 
 export async function runTool(request: ToolExecutionRequest) {
@@ -33,12 +34,16 @@ export async function runTool(request: ToolExecutionRequest) {
     arguments_.user_id = request.userId;
   }
 
+  const toolkitPrefixes: Record<string, string> = { GMAIL_: "gmail", GOOGLECALENDAR_: "googlecalendar", GOOGLEDRIVE_: "googledrive", GOOGLESHEETS_: "googlesheets", NOTION_: "notion", SLACK_: "slack", HUBSPOT_: "hubspot", CLICKUP_: "clickup" };
+  const toolkit = Object.entries(toolkitPrefixes).find(([prefix]) => request.toolSlug.startsWith(prefix))?.[1];
+  const selectedAccountId = request.connectedAccountId ?? (toolkit ? request.connectedAccounts?.[toolkit] : undefined);
+
   const execution = await executeInSecretarySession(
     request.userId,
     request.toolSlug,
     arguments_,
     request.sessionId,
-    request.connectedAccountId,
+    selectedAccountId,
   );
 
   return {

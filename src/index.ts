@@ -54,9 +54,10 @@ const server=createServer(async(req,res)=>{
     if(req.method==="POST" && url==="/api/chat") {
       const body=await readJson(req),message=typeof body.message==="string"?body.message:"";
       const conversation=getOrCreateConversation(userId,typeof body.conversationId==="string"?body.conversationId:undefined),sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
+      const connectedAccounts=body.connectedAccounts&&typeof body.connectedAccounts==="object"&&!Array.isArray(body.connectedAccounts)?Object.fromEntries(Object.entries(body.connectedAccounts).filter(([k,v])=>typeof k==="string"&&typeof v==="string")) as Record<string,string>:{};
       if(!message.trim()) return sendJson(res,400,{error:"message is required"});
       getOrCreateUser(userId); appendMessage(conversation.id,"user",message); addActivity({userId,type:"chat",summary:message.slice(0,160),status:"started"});
-      const result=await runAgent(userId,message,sessionId,conversation.id);
+      const result=await runAgent(userId,message,sessionId,conversation.id,connectedAccounts);
       if(result.confirmationRequired&&result.action){const pending=createPendingConfirmation({userId,conversationId:conversation.id,toolSlug:result.action.toolSlug,arguments:result.action.arguments,sessionId:result.sessionId,expiresAt:new Date(Date.now()+10*60*1000).toISOString()});addActivity({userId,type:"confirmation",summary:"Confirmation required for "+result.action.toolSlug,toolSlug:result.action.toolSlug,status:"confirmation_required"});return sendJson(res,200,{...result,conversationId:conversation.id,confirmationId:pending.id});}
       if(result.response) appendMessage(conversation.id,"assistant",result.response); addActivity({userId,type:"chat",summary:"Assistant response completed",status:"completed"}); return sendJson(res,200,{...result,conversationId:conversation.id});
     }

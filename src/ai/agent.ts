@@ -19,7 +19,7 @@ function extractExplicitMemory(message:string){
   return match?.[1]?.trim();
 }
 
-export async function runAgent(userId:string,message:string,sessionId?:string,conversationId?:string){
+export async function runAgent(userId:string,message:string,sessionId?:string,conversationId?:string,connectedAccounts?:Record<string,string>){
   const stored=conversationId?listMessages(conversationId,userId):[];
   const prior=stored.length&&stored[stored.length-1]?.role==="user"&&stored[stored.length-1]?.content===message?stored.slice(0,-1):stored;
   const history:ChatMessage[]=prior.slice(-20).filter(item=>item.role!=="tool").map(item=>({role:item.role,content:item.content} as ChatMessage));
@@ -70,7 +70,8 @@ export async function runAgent(userId:string,message:string,sessionId?:string,co
         userId,
         arguments:call.arguments,
         sessionId:currentSessionId,
-        confirmed:true
+        confirmed:true,
+        connectedAccounts
       });
 
       currentSessionId=result.sessionId??currentSessionId;
