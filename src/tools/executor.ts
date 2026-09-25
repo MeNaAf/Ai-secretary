@@ -28,7 +28,9 @@ export async function runTool(request: ToolExecutionRequest) {
   }
 
   const arguments_ = {...(request.arguments ?? {})};
-  if ("user_id" in arguments_) arguments_.user_id = request.userId;
+  // The authenticated application user is authoritative. Never allow model/client
+  // arguments to select another Composio user identity.
+  if ("user_id" in arguments_) delete arguments_.user_id;
 
   const execution = await executeInSecretarySession(
     request.userId,

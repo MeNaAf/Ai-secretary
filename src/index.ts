@@ -71,7 +71,6 @@ const server=createServer(async(req,res)=>{
     }
     if(req.method==="POST"&&url==="/api/confirm") return await confirmAction(req,res,userId,readJson);
     if(req.method==="POST"&&url==="/api/plan"){const body=await readJson(req),message=typeof body.message==="string"?body.message:"";if(!message.trim())return sendJson(res,400,{error:"message is required"});return sendJson(res,200,await runSecretary({userId,message}));}
-    if(req.method==="POST"&&url==="/api/tool/execute"){if(!config.composioApiKey)return sendJson(res,503,{error:"COMPOSIO_API_KEY is not configured."});const body=await readJson(req),toolSlug=typeof body.toolSlug==="string"?body.toolSlug:"";if(!toolSlug)return sendJson(res,400,{error:"toolSlug is required"});return sendJson(res,200,await runTool({toolSlug,userId,sessionId:typeof body.sessionId==="string"?body.sessionId:undefined,arguments:body.arguments&&typeof body.arguments==="object"?body.arguments:{},confirmed:body.confirmed===true}));}
     return sendJson(res,404,{error:"Not found"});
   } catch(error){return sendJson(res,500,{error:error instanceof Error?error.message:"Unexpected error"});}
 });
