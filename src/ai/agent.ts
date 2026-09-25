@@ -1,113 +1,33 @@
 import { askAI } from "./openrouter.js";
 import { TOOL_CATALOG } from "../tools/catalog.js";
 import { runTool } from "../tools/executor.js";
+import { listMessages } from "../memory/store.js";
 import type { ChatMessage } from "../types.js";
 
 const SYSTEM_PROMPT = `You are AI Secretary, a practical personal and SME operations assistant.
 
-Use connected tools when they can answer the user's request. Never invent emails, events, tasks, files, IDs, or tool results.
+Use connected tools when they can answer the user request. Never invent data.
+Read-only tools may run automatically. Mutations require explicit confirmation.
+Use only defined tool parameters and actual tool results.`;
 
-Read-only tools may be used automatically. Actions that change external data require explicit user confirmation.
+const tools = TOOL_CATALOG.map(tool => ({ type: "function" as const, function: { name: tool.slug, description: `${tool.name} [${tool.category}]`, parameters: tool.parameters } }));
 
-When calling a tool, use only its defined parameters. If an ID is missing, search for it instead of inventing one.
-
-After a tool executes, use its actual result. Never claim an action succeeded unless the tool returned success.
-
-Be concise, useful, and proactive.`;
-
-const tools = TOOL_CATALOG.map((tool) => ({
-  type: "function" as const,
-  function: {
-    name: tool.slug,
-    description: `${tool.name} [${tool.category}]`,
-    parameters: tool.parameters
-  }
-}));
-
-export async function runAgent(
-  userId: string,
-  message: string,
-  sessionId?: string
-) {
-  const messages: ChatMessage[] = [
-    { role: "system", content: SYSTEM_PROMPT },
-    { role: "user", content: message }
-  ];
-
+export async function runAgent(userId: string, message: string, sessionId?: string, conversationId?: string) {
+  const history: ChatMessage[] = conversationId ? listMessages(conversationId, userId).slice(-20).filter(item => item.role !== "tool").map(item => ({ role: item.role, content: item.content } as ChatMessage)) : [];
+  const messages: ChatMessage[] = [{ role: "system", content: SYSTEM_PROMPT }, ...history, { role: "user", content: message }];
   let currentSessionId = sessionId;
-
   for (let step = 0; step < 5; step++) {
     const response = await askAI(messages, tools);
-
-    if (!response.toolCalls.length) {
-      return {
-        response: response.content,
-        sessionId: currentSessionId
-      };
-    }
-
-    messages.push({
-      role: "assistant",
-      content: response.content || null,
-      tool_calls: response.toolCalls.map((call) => ({
-        id: call.id,
-        type: "function",
-        function: {
-          name: call.name,
-          arguments: JSON.stringify(call.arguments)
-        }
-      }))
-    });
-
+    if (!response.toolCalls.length) return { response: response.content, sessionId: currentSessionId };
+    messages.push({ role: "assistant", content: response.content || null, tool_calls: response.toolCalls.map(call => ({ id: call.id, type: "function", function: { name: call.name, arguments: JSON.stringify(call.arguments) } })) });
     for (const call of response.toolCalls) {
-      const definition = TOOL_CATALOG.find((item) => item.slug === call.name);
-
-      if (!definition) {
-        messages.push({
-          role: "tool",
-          tool_call_id: call.id,
-          content: JSON.stringify({ error: "Tool is not allowed." })
-        });
-        continue;
-      }
-
-      if (definition.requiresConfirmation) {
-        return {
-          response: null,
-          confirmationRequired: true,
-          action: {
-            tool: definition.name,
-            toolSlug: definition.slug,
-            arguments: call.arguments
-          },
-          sessionId: currentSessionId
-        };
-      }
-
-      const result = await runTool({
-        toolSlug: call.name,
-        userId,
-        arguments: call.arguments,
-        sessionId: currentSessionId,
-        confirmed: true
-      });
-
+      const definition = TOOL_CATALOG.find(item => item.slug === call.name);
+      if (!definition) { messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify({ error: "Tool is not allowed." }) }); continue; }
+      if (definition.requiresConfirmation) return { response: null, confirmationRequired: true, action: { tool: definition.name, toolSlug: definition.slug, arguments: call.arguments }, sessionId: currentSessionId };
+      const result = await runTool({ toolSlug: call.name, userId, arguments: call.arguments, sessionId: currentSessionId, confirmed: true });
       currentSessionId = result.sessionId ?? currentSessionId;
-
-      messages.push({
-        role: "tool",
-        tool_call_id: call.id,
-        content: JSON.stringify({
-          tool: call.name,
-          result
-        })
-      });
+      messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify({ tool: call.name, result }) });
     }
   }
-
-  return {
-    response:
-      "I reached the tool-execution limit for this request. Please narrow the request and try again.",
-    sessionId: currentSessionId
-  };
+  return { response: "I reached the tool-execution limit for this request. Please narrow the request and try again.", sessionId: currentSessionId };
 }
