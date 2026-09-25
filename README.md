@@ -2,31 +2,35 @@
 
 AI-powered personal and SME operations assistant.
 
-## Current architecture
+## Architecture
 
-User → API → OpenRouter → tool calling → Composio → connected apps.
+User → AI Secretary UI/API → OpenRouter → tool calling → Composio → connected apps.
 
-### Current foundation
+## Current foundation
 
-- Structured OpenRouter tool calling
+- OpenRouter tool-calling agent
 - Composio-backed connected-app execution
 - Read-only automatic actions
 - Confirmation gate for mutations
-- User profile foundation
-- Assistant activity/audit foundation
-- Dashboard API endpoints
+- User profile and activity foundation
+- Conversation and confirmation foundation
+- Browser dashboard with chat, activity and connections views
+- GitHub Actions TypeScript build
 
 ## Development endpoints
 
-- GET /health
-- GET /api/me
-- GET /api/activity
-- GET /api/tools
-- POST /api/chat
-- POST /api/plan
-- POST /api/tool/execute
+GET / — dashboard
+GET /health
+GET /api/me
+GET /api/activity
+GET /api/tools
+GET /api/conversations/:id/messages
+POST /api/chat
+POST /api/confirm
+POST /api/plan
+POST /api/tool/execute
 
-For local development, user identity can be supplied with the `x-user-id` header. This is NOT production authentication.
+Local development can use the x-user-id header. This is NOT production authentication.
 
 ## Environment
 
@@ -39,11 +43,11 @@ Never commit API keys or .env.
 
 ## Next layers
 
-1. Persistent database
-2. Real authentication
-3. Connection-management UI
-4. Exact live schema validation for every Composio action
-5. Memory and conversation persistence
-6. Dashboard frontend
-7. Daily briefings and scheduled workflows
-8. Voice interface
+1. Exact live Composio schema validation
+2. Persistent database
+3. Real authentication
+4. Connection-management UI
+5. Durable conversation and memory storage
+6. Daily briefings and scheduled workflows
+7. Voice interface
+8. Production deployment
