@@ -28,9 +28,11 @@ export async function runTool(request: ToolExecutionRequest) {
   }
 
   const arguments_ = {...(request.arguments ?? {})};
-  // The authenticated application user is authoritative. Never allow model/client
-  // arguments to select another Composio user identity.
-  if ("user_id" in arguments_) delete arguments_.user_id;
+
+  // Tool schemas may expose user_id as a required parameter. It is safe to
+  // provide it because this value always comes from the authenticated session,
+  // never from the client/model request.
+  if ("user_id" in arguments_) arguments_.user_id = request.userId;
 
   const execution = await executeInSecretarySession(
     request.userId,
