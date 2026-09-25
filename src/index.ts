@@ -32,11 +32,13 @@ const server=createServer(async(req,res)=>{
     const authenticated=userFromSession(cookies.ai_secretary_session);
     const devIdentityAllowed=process.env.AI_SECRETARY_ALLOW_DEV_IDENTITY==="true";
     const userId=authenticated?.id ?? (devIdentityAllowed && typeof req.headers["x-user-id"]==="string"?req.headers["x-user-id"]:"");
+
     if(req.method==="POST" && url==="/api/auth/register"){const body=await readJson(req);try{register(typeof body.email==="string"?body.email:"",typeof body.password==="string"?body.password:"");const auth=login(typeof body.email==="string"?body.email:"",typeof body.password==="string"?body.password:"");return sendJson(res,201,{user:auth.user},{"set-cookie":sessionCookie(auth.sessionId)})}catch(error){return sendJson(res,400,{error:error instanceof Error?error.message:"Registration failed"})}}
     if(req.method==="POST" && url==="/api/auth/login"){const body=await readJson(req);try{const auth=login(typeof body.email==="string"?body.email:"",typeof body.password==="string"?body.password:"");return sendJson(res,200,{user:auth.user},{"set-cookie":sessionCookie(auth.sessionId)})}catch(error){return sendJson(res,401,{error:error instanceof Error?error.message:"Invalid email or password"})}}
     if(req.method==="POST" && url==="/api/auth/logout"){logout(cookies.ai_secretary_session);return sendJson(res,200,{ok:true},{"set-cookie":clearSessionCookie()})}
     if(req.method==="GET" && url==="/api/auth/me")return sendJson(res,200,{authenticated:Boolean(authenticated),user:authenticated??null});
     if(!userId)return sendJson(res,401,{error:"Authentication required."});
+
     if(req.method==="GET" && url==="/health") return sendJson(res,200,{ok:true,service:"ai-secretary",composioConfigured:Boolean(config.composioApiKey),openRouterConfigured:Boolean(config.openRouterApiKey)});
     if(url.startsWith("/api/me")||url.startsWith("/api/activity")||url.startsWith("/api/tools")) { getOrCreateUser(userId); if(await dashboardResponse(req,res,userId)) return; }
     if(url.startsWith("/api/conversations/")) { if(conversationResponse(req,res,userId)) return; }
@@ -48,25 +50,25 @@ const server=createServer(async(req,res)=>{
       return sendJson(res,removed?200:404,removed?{ok:true}:{error:"Memory not found"});
     }
     if(req.method==="POST" && url==="/api/chat") {
-      const body=await readJson(req),message=typeof body.message==="string"?body.message:"",bodyUserId=typeof body.userId==="string"?body.userId:userId;
-      const conversation=getOrCreateConversation(bodyUserId,typeof body.conversationId==="string"?body.conversationId:undefined),sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
+      const body=await readJson(req),message=typeof body.message==="string"?body.message:"";
+      const conversation=getOrCreateConversation(userId,typeof body.conversationId==="string"?body.conversationId:undefined),sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
       if(!message.trim()) return sendJson(res,400,{error:"message is required"});
-      getOrCreateUser(bodyUserId); appendMessage(conversation.id,"user",message); addActivity({userId:bodyUserId,type:"chat",summary:message.slice(0,160),status:"started"});
-      const result=await runAgent(bodyUserId,message,sessionId,conversation.id);
-      if(result.confirmationRequired&&result.action){const pending=createPendingConfirmation({userId:bodyUserId,conversationId:conversation.id,toolSlug:result.action.toolSlug,arguments:result.action.arguments,sessionId:result.sessionId,expiresAt:new Date(Date.now()+10*60*1000).toISOString()});addActivity({userId:bodyUserId,type:"confirmation",summary:"Confirmation required for "+result.action.toolSlug,toolSlug:result.action.toolSlug,status:"confirmation_required"});return sendJson(res,200,{...result,conversationId:conversation.id,confirmationId:pending.id});}
-      if(result.response) appendMessage(conversation.id,"assistant",result.response); addActivity({userId:bodyUserId,type:"chat",summary:"Assistant response completed",status:"completed"}); return sendJson(res,200,{...result,conversationId:conversation.id});
+      getOrCreateUser(userId); appendMessage(conversation.id,"user",message); addActivity({userId,type:"chat",summary:message.slice(0,160),status:"started"});
+      const result=await runAgent(userId,message,sessionId,conversation.id);
+      if(result.confirmationRequired&&result.action){const pending=createPendingConfirmation({userId,conversationId:conversation.id,toolSlug:result.action.toolSlug,arguments:result.action.arguments,sessionId:result.sessionId,expiresAt:new Date(Date.now()+10*60*1000).toISOString()});addActivity({userId,type:"confirmation",summary:"Confirmation required for "+result.action.toolSlug,toolSlug:result.action.toolSlug,status:"confirmation_required"});return sendJson(res,200,{...result,conversationId:conversation.id,confirmationId:pending.id});}
+      if(result.response) appendMessage(conversation.id,"assistant",result.response); addActivity({userId,type:"chat",summary:"Assistant response completed",status:"completed"}); return sendJson(res,200,{...result,conversationId:conversation.id});
     }
     if(req.method==="POST"&&url==="/api/briefing"){
       if(!config.composioApiKey)return sendJson(res,503,{error:"COMPOSIO_API_KEY is not configured."});
       if(!config.openRouterApiKey)return sendJson(res,503,{error:"OPENROUTER_API_KEY is not configured."});
-      const body=await readJson(req),bodyUserId=typeof body.userId==="string"?body.userId:userId,sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
-      getOrCreateUser(bodyUserId);
-      const result=await buildDailyBriefing(bodyUserId,{sessionId});
-      addActivity({userId:bodyUserId,type:"briefing",summary:"Daily briefing generated",status:"completed"});
+      const body=await readJson(req),sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
+      getOrCreateUser(userId);
+      const result=await buildDailyBriefing(userId,{sessionId});
+      addActivity({userId,type:"briefing",summary:"Daily briefing generated",status:"completed"});
       return sendJson(res,200,result);
     }
     if(req.method==="POST"&&url==="/api/confirm") return await confirmAction(req,res,userId,readJson);
-    if(req.method==="POST"&&url==="/api/plan"){const body=await readJson(req),bodyUserId=typeof body.userId==="string"?body.userId:userId,message=typeof body.message==="string"?body.message:"";if(!message.trim())return sendJson(res,400,{error:"message is required"});return sendJson(res,200,await runSecretary({userId:bodyUserId,message}));}
+    if(req.method==="POST"&&url==="/api/plan"){const body=await readJson(req),message=typeof body.message==="string"?body.message:"";if(!message.trim())return sendJson(res,400,{error:"message is required"});return sendJson(res,200,await runSecretary({userId,message}));}
     if(req.method==="POST"&&url==="/api/tool/execute"){if(!config.composioApiKey)return sendJson(res,503,{error:"COMPOSIO_API_KEY is not configured."});const body=await readJson(req),toolSlug=typeof body.toolSlug==="string"?body.toolSlug:"";if(!toolSlug)return sendJson(res,400,{error:"toolSlug is required"});return sendJson(res,200,await runTool({toolSlug,userId,sessionId:typeof body.sessionId==="string"?body.sessionId:undefined,arguments:body.arguments&&typeof body.arguments==="object"?body.arguments:{},confirmed:body.confirmed===true}));}
     return sendJson(res,404,{error:"Not found"});
   } catch(error){return sendJson(res,500,{error:error instanceof Error?error.message:"Unexpected error"});}
