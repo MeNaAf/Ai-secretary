@@ -2,6 +2,7 @@ import { askAI } from "./openrouter.js";
 import { TOOL_CATALOG } from "../tools/catalog.js";
 import { runTool } from "../tools/executor.js";
 import { listMessages } from "../memory/store.js";
+import { listRelevantMemories, remember } from "../memory/semantic.js";
 import type { ChatMessage } from "../types.js";
 
 const SYSTEM_PROMPT=`You are AI Secretary, a practical personal and SME operations assistant.
@@ -12,11 +13,11 @@ Use only defined tool parameters and actual tool results.`;
 
 const tools=TOOL_CATALOG.map(tool=>({type:"function" as const,function:{name:tool.slug,description:`${tool.name} [${tool.category}]`,parameters:tool.parameters}}));
 
-export async function runAgent(userId:string,message:string,sessionId?:string,conversationId?:string){
+function extractExplicitMemory(message:string){\n  const match=message.match(/^(?:remember(?: that)?|please remember(?: that)?|my preference is|i prefer|i always)[:\\s]+(.+)$/i);\n  return match?.[1]?.trim();\n}\n\nexport async function runAgent(userId:string,message:string,sessionId?:string,conversationId?:string){
   const stored=conversationId?listMessages(conversationId,userId):[];
   const prior=stored.length&&stored[stored.length-1]?.role==="user"&&stored[stored.length-1]?.content===message?stored.slice(0,-1):stored;
   const history:ChatMessage[]=prior.slice(-20).filter(item=>item.role!=="tool").map(item=>({role:item.role,content:item.content} as ChatMessage));
-  const messages:ChatMessage[]=[{role:"system",content:SYSTEM_PROMPT},...history,{role:"user",content:message}];
+  const memories=listRelevantMemories(userId,message);\n  const memoryContext=memories.length?"\nRelevant remembered preferences/facts:\n"+memories.map(item=>"- "+item.text).join("\n"):"";\n  const explicitMemory=extractExplicitMemory(message);\n  if(explicitMemory) remember(userId,explicitMemory);\n  const memories=listRelevantMemories(userId,message);\n  const memoryContext=memories.length?"\nRelevant remembered preferences/facts:\n"+memories.map(item=>"- "+item.text).join("\n"):"";\n  const messages:ChatMessage[]=[{role:"system",content:SYSTEM_PROMPT+memoryContext},...history,{role:"user",content:message}];
   let currentSessionId=sessionId;
   for(let step=0;step<5;step++){
     const response=await askAI(messages,tools);
