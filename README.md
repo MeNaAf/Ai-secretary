@@ -1,76 +1,93 @@
 # AI Secretary
 
-AI-powered personal and SME operations assistant.
+AI Secretary is an AI-powered personal and SME operations assistant.
 
 ## Architecture
 
-User -> AI Secretary API -> OpenRouter (reasoning) -> Composio (connected tools) -> Gmail / Calendar / Drive / Sheets / Notion / Slack / HubSpot / ClickUp
+```
+User
+  ↓
+AI Secretary API
+  ↓
+OpenRouter
+  ↓
+Composio Session (scoped to the application user)
+  ↓
+Gmail / Calendar / Drive / Sheets / Notion / Slack / HubSpot / ClickUp
+```
 
-The application uses Composio's TypeScript SDK for server-side tool execution. Composio keeps provider credentials server-side and executes tools using the connected account selected for the user.
+## Current foundation
 
-## Current capabilities
-
-- OpenRouter AI chat
-- Secretary planning layer
-- Composio tool catalog
-- Server-side Composio tool executor
-- Read-first safety model
-- Explicit confirmation required for high-impact actions
+- TypeScript + Node.js
+- OpenRouter as the model gateway
+- Composio for connected-app authentication and tool execution
+- Session-scoped Composio execution so connected accounts are isolated by `userId`
+- Confirmation gates for mutating actions
 - GitHub Actions CI
 
-## API
+Composio sessions are the runtime boundary for a user's connected accounts and tool access. The application should use a stable database-backed user ID in production and persist the Composio session ID for reuse. citeturn0search8turn0search9
 
-### Health
+## Environment
 
-GET `/health`
+Copy `.env.example` to `.env` for local development:
 
-### Chat
-
-POST `/api/chat`
-
-```json
-{
-  "message": "Help me prioritize today."
-}
 ```
-
-### Plan
-
-POST `/api/plan`
-
-```json
-{
-  "message": "Find the emails that need my attention."
-}
-```
-
-### Execute a known Composio tool
-
-POST `/api/tool/execute`
-
-```json
-{
-  "toolSlug": "GMAIL_GET_PROFILE",
-  "userId": "your-app-user-id",
-  "arguments": {}
-}
-```
-
-For a mutating tool, the request must additionally contain `"confirmed": true`.
-
-## Environment variables
-
-```text
 OPENROUTER_API_KEY=
 OPENROUTER_MODEL=openrouter/free
 COMPOSIO_API_KEY=
 PORT=3000
 ```
 
-Never commit real secrets. Store them in GitHub/hosting encrypted secrets.
+Never commit `.env` or API keys.
 
-## Important
+## Run
 
-The Composio `userId` is the application user's identity in your Composio project. It should be stable per user. Connected accounts are selected by Composio for that user, or by explicit connected account ID when multiple accounts exist.
+```bash
+npm install
+npm run build
+npm run dev
+```
 
-The next application layer should add authentication and a database so each SME/personal user gets an isolated userId and their own connected accounts.
+## API
+
+### Health
+
+`GET /health`
+
+### Chat
+
+`POST /api/chat`
+
+```json
+{
+  "userId": "user_123",
+  "message": "What do I have today?"
+}
+```
+
+### Planning
+
+`POST /api/plan`
+
+### Tool execution
+
+`POST /api/tool/execute`
+
+Mutating tools require:
+
+```json
+{
+  "confirmed": true
+}
+```
+
+A successful execution returns a `sessionId`. Send that ID on later tool calls when reusing the same Composio session.
+
+## Next build layer
+
+1. Real user authentication
+2. Persistent database user IDs and session IDs
+3. Connection-management UI
+4. OpenRouter tool-calling loop
+5. Per-user memory and audit log
+6. Daily briefing and scheduled workflows

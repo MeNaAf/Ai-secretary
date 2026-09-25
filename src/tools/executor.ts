@@ -1,4 +1,4 @@
-import { executeTool } from "../composio/client.js";
+import { executeInSecretarySession } from "../composio/session.js";
 import { getTool } from "./catalog.js";
 
 export type ToolExecutionRequest = {
@@ -7,6 +7,7 @@ export type ToolExecutionRequest = {
   arguments?: Record<string, unknown>;
   connectedAccountId?: string;
   confirmed?: boolean;
+  sessionId?: string;
 };
 
 export async function runTool(request: ToolExecutionRequest) {
@@ -21,21 +22,23 @@ export async function runTool(request: ToolExecutionRequest) {
       status: "confirmation_required",
       tool: definition.name,
       toolSlug: definition.slug,
-      message: `Confirmation required before running ${definition.name}.`
+      message: `Confirmation required before running ${definition.name}.`,
+      sessionId: request.sessionId
     };
   }
 
-  const result = await executeTool(
-    request.toolSlug,
+  const execution = await executeInSecretarySession(
     request.userId,
+    request.toolSlug,
     request.arguments ?? {},
-    request.connectedAccountId
+    request.sessionId
   );
 
   return {
     status: "executed",
     tool: definition.name,
     toolSlug: definition.slug,
-    result
+    sessionId: execution.sessionId,
+    result: execution.result
   };
 }

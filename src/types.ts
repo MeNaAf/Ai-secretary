@@ -6,6 +6,7 @@ export type ChatMessage = {
 export type ChatRequest = {
   message?: unknown;
   userId?: unknown;
+  sessionId?: unknown;
 };
 
 export type ToolRequest = {
@@ -14,4 +15,5 @@ export type ToolRequest = {
   arguments?: unknown;
   connectedAccountId?: unknown;
   confirmed?: unknown;
+  sessionId?: unknown;
 };

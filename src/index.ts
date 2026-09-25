@@ -1,125 +1,104 @@
-import http from "node:http";
-import { planRequest } from "./ai/secretary.js";
-import { askAI } from "./ai/openrouter.js";
+import "dotenv/config";
+import { createServer } from "node:http";
 import { config } from "./config.js";
+import { runSecretary } from "./ai/secretary.js";
 import { runTool } from "./tools/executor.js";
-import type { ChatMessage, ChatRequest, ToolRequest } from "./types.js";
+import { runOpenRouter } from "./ai/openrouter.js";
 
-function sendJson(
-  response: http.ServerResponse,
-  status: number,
-  body: unknown
-) {
-  response.writeHead(status, {
-    "Content-Type": "application/json",
-    "Cache-Control": "no-store"
+function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown) {
+  res.writeHead(status, {
+    "content-type": "application/json; charset=utf-8"
   });
-  response.end(JSON.stringify(body));
+  res.end(JSON.stringify(body));
 }
 
-async function readJson(request: http.IncomingMessage): Promise<unknown> {
-  const chunks: Buffer[] = [];
-
-  for await (const chunk of request) {
-    chunks.push(Buffer.from(chunk));
-  }
-
-  if (chunks.length === 0) return {};
-  return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+async function readJson(req: import("node:http").IncomingMessage) {
+  let body = "";
+  for await (const chunk of req) body += chunk;
+  if (!body) return {};
+  return JSON.parse(body);
 }
 
-function requireString(value: unknown, field: string): string {
-  if (typeof value !== "string" || !value.trim()) {
-    throw new Error(`${field} must be a non-empty string`);
-  }
-
-  return value.trim();
-}
-
-const server = http.createServer(async (request, response) => {
+const server = createServer(async (req, res) => {
   try {
-    const url = new URL(request.url ?? "/", `http://localhost:${config.port}`);
-
-    if (request.method === "GET" && url.pathname === "/health") {
-      sendJson(response, 200, {
+    if (req.method === "GET" && req.url === "/health") {
+      return sendJson(res, 200, {
         ok: true,
         service: "ai-secretary",
         composioConfigured: Boolean(config.composioApiKey),
         openRouterConfigured: Boolean(config.openRouterApiKey)
       });
-      return;
     }
 
-    if (request.method === "POST" && url.pathname === "/api/chat") {
-      const body = (await readJson(request)) as ChatRequest;
-      const message = requireString(body.message, "message");
+    if (req.method === "POST" && req.url === "/api/chat") {
+      const body = await readJson(req);
+      const userId = typeof body.userId === "string" ? body.userId : "local-dev-user";
+      const message = typeof body.message === "string" ? body.message : "";
 
-      const messages: ChatMessage[] = [{ role: "user", content: message }];
-      const answer = await askAI(messages);
-
-      sendJson(response, 200, {
-        answer,
-        mode: "chat",
-        model: config.openRouterModel
-      });
-      return;
-    }
-
-    if (request.method === "POST" && url.pathname === "/api/plan") {
-      const body = (await readJson(request)) as ChatRequest;
-      const message = requireString(body.message, "message");
-
-      const plan = await planRequest(message);
-
-      sendJson(response, 200, {
-        plan,
-        mode: "secretary-planner",
-        model: config.openRouterModel
-      });
-      return;
-    }
-
-    if (request.method === "POST" && url.pathname === "/api/tool/execute") {
-      const body = (await readJson(request)) as ToolRequest;
-
-      if (!config.composioApiKey) {
-        sendJson(response, 503, {
-          error: "Composio is not configured. Add COMPOSIO_API_KEY to the server environment."
-        });
-        return;
+      if (!message.trim()) {
+        return sendJson(res, 400, { error: "message is required" });
       }
 
-      const toolSlug = requireString(body.toolSlug, "toolSlug");
-      const userId = requireString(body.userId, "userId");
+      const result = await runOpenRouter(
+        await runSecretary({
+          userId,
+          message
+        })
+      );
+
+      return sendJson(res, 200, {
+        userId,
+        response: result
+      });
+    }
+
+    if (req.method === "POST" && req.url === "/api/plan") {
+      const body = await readJson(req);
+      const userId = typeof body.userId === "string" ? body.userId : "local-dev-user";
+      const message = typeof body.message === "string" ? body.message : "";
+
+      if (!message.trim()) {
+        return sendJson(res, 400, { error: "message is required" });
+      }
+
+      return sendJson(res, 200, await runSecretary({ userId, message }));
+    }
+
+    if (req.method === "POST" && req.url === "/api/tool/execute") {
+      if (!config.composioApiKey) {
+        return sendJson(res, 503, { error: "COMPOSIO_API_KEY is not configured." });
+      }
+
+      const body = await readJson(req);
+      const toolSlug = typeof body.toolSlug === "string" ? body.toolSlug : "";
+      const userId = typeof body.userId === "string" ? body.userId : "local-dev-user";
+      const sessionId = typeof body.sessionId === "string" ? body.sessionId : undefined;
+
+      if (!toolSlug) {
+        return sendJson(res, 400, { error: "toolSlug is required" });
+      }
 
       const result = await runTool({
         toolSlug,
         userId,
+        sessionId,
         arguments:
           body.arguments && typeof body.arguments === "object"
-            ? (body.arguments as Record<string, unknown>)
+            ? body.arguments
             : {},
-        connectedAccountId:
-          typeof body.connectedAccountId === "string"
-            ? body.connectedAccountId
-            : undefined,
         confirmed: body.confirmed === true
       });
 
-      sendJson(response, 200, result);
-      return;
+      return sendJson(res, 200, result);
     }
 
-    sendJson(response, 404, { error: "Not found" });
+    return sendJson(res, 404, { error: "Not found" });
   } catch (error) {
-    console.error(error);
-
-    sendJson(response, 400, {
-      error: error instanceof Error ? error.message : "Request failed"
-    });
+    const message = error instanceof Error ? error.message : "Unexpected error";
+    return sendJson(res, 500, { error: message });
   }
 });
 
 server.listen(config.port, () => {
-  console.log(`AI Secretary API listening on http://localhost:${config.port}`);
+  console.log(`AI Secretary listening on http://localhost:${config.port}`);
 });
