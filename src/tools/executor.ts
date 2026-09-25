@@ -27,10 +27,13 @@ export async function runTool(request: ToolExecutionRequest) {
     };
   }
 
+  const arguments_ = {...(request.arguments ?? {})};
+  if ("user_id" in arguments_) arguments_.user_id = request.userId;
+
   const execution = await executeInSecretarySession(
     request.userId,
     request.toolSlug,
-    request.arguments ?? {},
+    arguments_,
     request.sessionId
   );
 
