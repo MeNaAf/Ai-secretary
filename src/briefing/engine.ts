@@ -1,10 +1,13 @@
 import { askAI } from "../ai/openrouter.js";
 import { runTool } from "../tools/executor.js";
+import { getOrCreateUser } from "../users/store.js";
 
 export type BriefingItem = {
   source: string;
   kind: "email" | "calendar" | "message" | "crm";
   data: unknown;
+  status?: "ok" | "unavailable";
+  error?: string;
 };
 
 export type DailyBriefingResult = {
@@ -22,24 +25,58 @@ function compact(value: unknown, max = 6000) {
   return text.length > max ? text.slice(0, max) + "...[truncated]" : text;
 }
 
+function safeError(error: unknown) {
+  return error instanceof Error ? error.message : "Source unavailable.";
+}
+
 async function readTool(
   userId: string,
   toolSlug: string,
   arguments_: Record<string, unknown>,
   sessionId?: string
 ) {
-  const result = await runTool({
-    toolSlug,
-    userId,
-    arguments: arguments_,
-    sessionId,
-    confirmed: true
-  });
+  try {
+    const result = await runTool({
+      toolSlug,
+      userId,
+      arguments: arguments_,
+      sessionId,
+      confirmed: true
+    });
 
-  return {
-    result: result.result,
-    sessionId: result.sessionId ?? sessionId
-  };
+    return {
+      ok: true as const,
+      result: result.result,
+      sessionId: result.sessionId ?? sessionId
+    };
+  } catch (error) {
+    return {
+      ok: false as const,
+      error: safeError(error),
+      sessionId
+    };
+  }
+}
+
+function addRead(
+  items: BriefingItem[],
+  source: string,
+  kind: BriefingItem["kind"],
+  read: Awaited<ReturnType<typeof readTool>>
+) {
+  if (read.ok) {
+    items.push({ source, kind, data: read.result, status: "ok" });
+    return read.sessionId;
+  }
+
+  items.push({
+    source,
+    kind,
+    data: null,
+    status: "unavailable",
+    error: read.error
+  });
+  return read.sessionId;
 }
 
 export async function buildDailyBriefing(
@@ -47,6 +84,9 @@ export async function buildDailyBriefing(
   options: { sessionId?: string; now?: Date } = {}
 ): Promise<DailyBriefingResult> {
   const now = options.now ?? new Date();
+  const profile = getOrCreateUser(userId);
+  const timeZone = profile.timezone || "Africa/Johannesburg";
+
   const start = new Date(now);
   start.setHours(0, 0, 0, 0);
   const end = new Date(start);
@@ -64,8 +104,7 @@ export async function buildDailyBriefing(
     include_payload: false,
     include_spam_trash: false
   }, sessionId);
-  sessionId = email.sessionId;
-  items.push({ source: "Gmail", kind: "email", data: email.result });
+  sessionId = addRead(items, "Gmail", "email", email) ?? sessionId;
 
   const calendar = await readTool(userId, "GOOGLECALENDAR_EVENTS_LIST", {
     calendarId: "primary",
@@ -75,10 +114,9 @@ export async function buildDailyBriefing(
     singleEvents: true,
     showDeleted: false,
     maxResults: 50,
-    timeZone: "Africa/Johannesburg"
+    timeZone
   }, sessionId);
-  sessionId = calendar.sessionId;
-  items.push({ source: "Google Calendar", kind: "calendar", data: calendar.result });
+  sessionId = addRead(items, "Google Calendar", "calendar", calendar) ?? sessionId;
 
   const slack = await readTool(userId, "SLACK_SEARCH_ALL", {
     query: "after:" + start.toISOString().slice(0, 10),
@@ -87,8 +125,7 @@ export async function buildDailyBriefing(
     sort: "timestamp",
     sort_dir: "desc"
   }, sessionId);
-  sessionId = slack.sessionId;
-  items.push({ source: "Slack", kind: "message", data: slack.result });
+  sessionId = addRead(items, "Slack", "message", slack) ?? sessionId;
 
   const crm = await readTool(userId, "HUBSPOT_SEARCH_CRM_OBJECTS_BY_CRITERIA", {
     objectType: "tasks",
@@ -101,11 +138,15 @@ export async function buildDailyBriefing(
       "hs_timestamp"
     ]
   }, sessionId);
-  sessionId = crm.sessionId;
-  items.push({ source: "HubSpot", kind: "crm", data: crm.result });
+  sessionId = addRead(items, "HubSpot", "crm", crm) ?? sessionId;
 
   const evidence = items
-    .map((item) => `### ${item.source}\n${compact(item.data)}`)
+    .map((item) => {
+      const status = item.status === "unavailable"
+        ? `UNAVAILABLE: ${item.error}`
+        : compact(item.data);
+      return `### ${item.source}\n${status}`;
+    })
     .join("\n\n");
 
   const ai = await askAI([
@@ -115,11 +156,11 @@ export async function buildDailyBriefing(
         "You are AI Secretary's daily briefing engine. Summarize only the supplied evidence. " +
         "Do not invent meetings, emails, tasks, people, deadlines, or urgency. " +
         "Return a concise morning briefing with: Today, Needs attention, and Suggested next actions. " +
-        "Clearly say when a source has no useful data."
+        "Clearly identify unavailable sources and never treat missing data as no data."
     },
     {
       role: "user",
-      content: `Create today's briefing for ${now.toISOString()} using this evidence:\n\n${evidence}`
+      content: `Create today's briefing for ${now.toISOString()} in timezone ${timeZone} using this evidence:\n\n${evidence}`
     }
   ]);
 
