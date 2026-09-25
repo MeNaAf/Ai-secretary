@@ -11,6 +11,7 @@ import { conversationResponse } from "./api/conversations.js";
 import { confirmAction } from "./api/confirmations.js";
 import { getOrCreateUser, addActivity } from "./users/store.js";
 import { getOrCreateConversation, appendMessage, createPendingConfirmation } from "./memory/store.js";
+import { buildDailyBriefing } from "./briefing/engine.js";
 
 function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown) { res.writeHead(status, {"content-type":"application/json; charset=utf-8"}); res.end(JSON.stringify(body)); }
 async function readJson(req: import("node:http").IncomingMessage) { let body=""; for await (const chunk of req) body+=chunk; return body ? JSON.parse(body) : {}; }
@@ -35,8 +36,17 @@ const server=createServer(async(req,res)=>{
       if(!message.trim()) return sendJson(res,400,{error:"message is required"});
       getOrCreateUser(bodyUserId); appendMessage(conversation.id,"user",message); addActivity({userId:bodyUserId,type:"chat",summary:message.slice(0,160),status:"started"});
       const result=await runAgent(bodyUserId,message,sessionId,conversation.id);
-      if(result.confirmationRequired&&result.action){const pending=createPendingConfirmation({userId:bodyUserId,conversationId:conversation.id,toolSlug:result.action.toolSlug,arguments:result.action.arguments,expiresAt:new Date(Date.now()+10*60*1000).toISOString()});addActivity({userId:bodyUserId,type:"confirmation",summary:"Confirmation required for "+result.action.toolSlug,toolSlug:result.action.toolSlug,status:"confirmation_required"});return sendJson(res,200,{...result,conversationId:conversation.id,confirmationId:pending.id});}
+      if(result.confirmationRequired&&result.action){const pending=createPendingConfirmation({userId:bodyUserId,conversationId:conversation.id,toolSlug:result.action.toolSlug,arguments:result.action.arguments,sessionId:result.sessionId,expiresAt:new Date(Date.now()+10*60*1000).toISOString()});addActivity({userId:bodyUserId,type:"confirmation",summary:"Confirmation required for "+result.action.toolSlug,toolSlug:result.action.toolSlug,status:"confirmation_required"});return sendJson(res,200,{...result,conversationId:conversation.id,confirmationId:pending.id});}
       if(result.response) appendMessage(conversation.id,"assistant",result.response); addActivity({userId:bodyUserId,type:"chat",summary:"Assistant response completed",status:"completed"}); return sendJson(res,200,{...result,conversationId:conversation.id});
+    }
+    if(req.method==="POST"&&url==="/api/briefing"){
+      if(!config.composioApiKey)return sendJson(res,503,{error:"COMPOSIO_API_KEY is not configured."});
+      if(!config.openRouterApiKey)return sendJson(res,503,{error:"OPENROUTER_API_KEY is not configured."});
+      const body=await readJson(req),bodyUserId=typeof body.userId==="string"?body.userId:userId,sessionId=typeof body.sessionId==="string"?body.sessionId:undefined;
+      getOrCreateUser(bodyUserId);
+      const result=await buildDailyBriefing(bodyUserId,{sessionId});
+      addActivity({userId:bodyUserId,type:"briefing",summary:"Daily briefing generated",status:"completed"});
+      return sendJson(res,200,result);
     }
     if(req.method==="POST"&&url==="/api/confirm") return await confirmAction(req,res,userId,readJson);
     if(req.method==="POST"&&url==="/api/plan"){const body=await readJson(req),bodyUserId=typeof body.userId==="string"?body.userId:userId,message=typeof body.message==="string"?body.message:"";if(!message.trim())return sendJson(res,400,{error:"message is required"});return sendJson(res,200,await runSecretary({userId:bodyUserId,message}));}
