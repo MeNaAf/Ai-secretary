@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import type { ChatMessage } from "../types.js";
+import type { ChatMessage, ToolCall } from "../types.js";
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
@@ -14,11 +14,7 @@ type ToolDefinition = {
 
 export type OpenRouterResponse = {
   content: string;
-  toolCalls: Array<{
-    id: string;
-    name: string;
-    arguments: Record<string, unknown>;
-  }>;
+  toolCalls: ToolCall[];
 };
 
 export async function askAI(
@@ -46,7 +42,9 @@ export async function askAI(
   });
 
   if (!response.ok) {
-    throw new Error(`OpenRouter request failed (${response.status}): ${await response.text()}`);
+    throw new Error(
+      `OpenRouter request failed (${response.status}): ${await response.text()}`
+    );
   }
 
   const data = await response.json() as {
@@ -55,25 +53,35 @@ export async function askAI(
         content?: string | null;
         tool_calls?: Array<{
           id?: string;
-          function?: {
-            name?: string;
-            arguments?: string;
-          };
+          type?: "function";
+          function?: { name?: string; arguments?: string };
         }>;
       };
     }>;
   };
 
   const message = data.choices?.[0]?.message;
+
   const toolCalls = (message?.tool_calls ?? []).flatMap((call) => {
     if (!call.id || !call.function?.name) return [];
+
     let args: Record<string, unknown> = {};
+
     try {
-      args = call.function.arguments ? JSON.parse(call.function.arguments) : {};
+      args = call.function.arguments
+        ? JSON.parse(call.function.arguments)
+        : {};
     } catch {
-      throw new Error(`Invalid JSON arguments returned for tool ${call.function.name}`);
+      throw new Error(
+        `Invalid JSON arguments returned for tool ${call.function.name}`
+      );
     }
-    return [{ id: call.id, name: call.function.name, arguments: args }];
+
+    return [{
+      id: call.id,
+      name: call.function.name,
+      arguments: args
+    }];
   });
 
   return {
