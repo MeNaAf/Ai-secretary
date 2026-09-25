@@ -12,7 +12,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@composio/core": "^0.6.0",
+    "@composio/core": "^0.18.1",
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
