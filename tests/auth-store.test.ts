@@ -1,0 +1,45 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const dataDir = mkdtempSync(join(tmpdir(), "ai-secretary-auth-"));
+process.env.AI_SECRETARY_DATA_DIR = dataDir;
+
+const { register, login, userFromSession, logout } = await import("../src/auth/store.js");
+
+test.after(() => {
+  rmSync(dataDir, { recursive: true, force: true });
+});
+
+test("register/login creates a usable session and logout revokes it", () => {
+  const email = `auth-test-${Date.now()}@example.com`;
+  const password = "correct horse battery staple";
+
+  const registered = register(email, password);
+  assert.equal(registered.email, email);
+  assert.equal(registered.id.length > 0, true);
+
+  const authenticated = login(email, password);
+  assert.equal(authenticated.user?.email, email);
+  assert.equal(authenticated.sessionId.length, 64);
+  assert.equal(userFromSession(authenticated.sessionId)?.email, email);
+
+  logout(authenticated.sessionId);
+  assert.equal(userFromSession(authenticated.sessionId), undefined);
+});
+
+test("persisted session records do not contain the browser session token", () => {
+  const email = `persist-test-${Date.now()}@example.com`;
+  const authenticated = login(email, "a-valid-password-123");
+  const persisted = JSON.parse(readFileSync(join(dataDir, "auth.json"), "utf8")) as {
+    sessions: Array<{ id: string }>;
+  };
+
+  assert.ok(persisted.sessions.length > 0);
+  assert.ok(persisted.sessions.every((session) => session.id.length === 64));
+  assert.ok(persisted.sessions.every((session) => session.id !== authenticated.sessionId));
+
+  logout(authenticated.sessionId);
+});
