@@ -120,7 +120,12 @@ export async function buildDailyBriefing(
 
   const todayKey = localDateKey(now, timeZone);
   const start = zonedMidnightUtc(todayKey, timeZone);
-  const tomorrowKey = localDateKey(new Date(start.getTime() + 36 * 60 * 60 * 1000), timeZone);
+  const tomorrowKey = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date(Date.parse(todayKey + "T00:00:00Z") + 24 * 60 * 60 * 1000));
   const end = zonedMidnightUtc(tomorrowKey, timeZone);
 
   let sessionId = options.sessionId;

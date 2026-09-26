@@ -17,7 +17,28 @@ import { listMemories, forgetMemory } from "./memory/semantic.js";
 import { register, login, logout, userFromSession, sessionCookie, clearSessionCookie } from "./auth/store.js";
 
 function sendJson(res: import("node:http").ServerResponse, status: number, body: unknown, headers: Record<string,string> = {}) { res.writeHead(status, {"content-type":"application/json; charset=utf-8", ...headers}); res.end(JSON.stringify(body)); }
-async function readJson(req: import("node:http").IncomingMessage) { let body=""; for await (const chunk of req) body+=chunk; return body ? JSON.parse(body) : {}; }
+const MAX_REQUEST_BYTES = 1_000_000;
+
+async function readJson(req: import("node:http").IncomingMessage) {
+  const declared = Number(req.headers["content-length"] ?? 0);
+  if (Number.isFinite(declared) && declared > MAX_REQUEST_BYTES) {
+    const error = new Error("Request body too large.");
+    (error as Error & { statusCode?: number }).statusCode = 413;
+    throw error;
+  }
+  let body="";
+  let size=0;
+  for await (const chunk of req) {
+    size += Buffer.byteLength(chunk as string | Buffer);
+    if (size > MAX_REQUEST_BYTES) {
+      const error = new Error("Request body too large.");
+      (error as Error & { statusCode?: number }).statusCode = 413;
+      throw error;
+    }
+    body += chunk;
+  }
+  return body ? JSON.parse(body) : {};
+}
 async function servePublic(res: import("node:http").ServerResponse, path: string) {
   const safe=path==="/" ? "index.html" : path.replace(/^\/+/, "");
   if (safe.includes("..")) return false;
@@ -73,6 +94,6 @@ const server=createServer(async(req,res)=>{
     if(req.method==="POST"&&url==="/api/confirm") return await confirmAction(req,res,userId,readJson);
     if(req.method==="POST"&&url==="/api/plan"){const body=await readJson(req),message=typeof body.message==="string"?body.message:"";if(!message.trim())return sendJson(res,400,{error:"message is required"});return sendJson(res,200,await runSecretary({userId,message}));}
     return sendJson(res,404,{error:"Not found"});
-  } catch(error){return sendJson(res,500,{error:error instanceof Error?error.message:"Unexpected error"});}
+  } catch(error){return sendJson(res,(error as {statusCode?:number})?.statusCode===413?413:500,{error:error instanceof Error?error.message:"Unexpected error"});}
 });
 server.listen(config.port,()=>console.log("AI Secretary listening on http://localhost:"+config.port));
