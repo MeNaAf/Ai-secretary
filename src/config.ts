@@ -10,5 +10,6 @@ export const config = {
   port,
   openRouterApiKey: process.env.OPENROUTER_API_KEY ?? "",
   openRouterModel: process.env.OPENROUTER_MODEL ?? "openrouter/free",
-  composioApiKey: process.env.COMPOSIO_API_KEY ?? ""
+  composioApiKey: process.env.COMPOSIO_API_KEY ?? "",
+  paypalClientId: process.env.PAYPAL_CLIENT_ID ?? ""
 };
