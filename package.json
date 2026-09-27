@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@composio/core": "^0.21.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "serverless-http": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
