@@ -1,0 +1,11 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+const dataDir=mkdtempSync(join(tmpdir(),"ai-secretary-billing-"));
+process.env.AI_SECRETARY_DATA_DIR=dataDir;
+const {createCheckoutToken,consumeCheckoutToken,upsertSubscription,hasActiveSubscription}=await import("../src/billing/store.js");
+test.after(()=>rmSync(dataDir,{recursive:true,force:true}));
+test("checkout tokens are user-scoped and one-time",()=>{const checkout=createCheckoutToken("user-a");assert.equal(consumeCheckoutToken(checkout.token,"user-b"),false);assert.equal(consumeCheckoutToken(checkout.token,"user-a"),true);assert.equal(consumeCheckoutToken(checkout.token,"user-a"),false)});
+test("only ACTIVE subscriptions grant Pro access",()=>{upsertSubscription({userId:"user-b",paypalSubscriptionId:"I-TEST",paypalPlanId:"P-TEST",status:"APPROVED"});assert.equal(hasActiveSubscription("user-b"),false);upsertSubscription({userId:"user-b",paypalSubscriptionId:"I-TEST",paypalPlanId:"P-TEST",status:"ACTIVE"});assert.equal(hasActiveSubscription("user-b"),true)});
