@@ -2,52 +2,39 @@
 
 AI-powered personal and SME operations assistant.
 
-## Architecture
+## Core
 
-User → AI Secretary UI/API → OpenRouter → tool calling → Composio → connected apps.
+Authenticated accounts, OpenRouter tool calling, live Composio schemas, Gmail, Calendar, Drive, Sheets, Slack, Notion, HubSpot and ClickUp integrations, confirmation-gated mutations, conversation history, semantic memory, cross-source briefings, browser voice, and PayPal Pro subscriptions.
 
-## Current foundation
+## PayPal Pro
 
-- OpenRouter tool-calling agent
-- Composio-backed connected-app execution
-- Read-only automatic actions
-- Confirmation gate for mutations
-- User profile and activity foundation
-- Conversation and confirmation foundation
-- Browser dashboard with chat, activity and connections views
-- GitHub Actions TypeScript build
+AI Secretary Pro is $25 USD/month on the existing active plan P-8SC10898FX170705XNK4PPNQ. The server obtains PayPal OAuth access tokens, verifies the returned subscription ID against the configured plan and checkout token, persists subscription state, supports cancellation, and verifies PayPal webhooks.
 
-## Development endpoints
+Required variables: OPENROUTER_API_KEY, OPENROUTER_MODEL, COMPOSIO_API_KEY, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_PLAN_ID, PAYPAL_WEBHOOK_ID, PAYPAL_BASE_URL, APP_ORIGIN, PORT, AI_SECRETARY_ALLOW_DEV_IDENTITY, AI_SECRETARY_DATA_DIR.
 
-GET / — dashboard
-GET /health
-GET /api/me
-GET /api/activity
-GET /api/tools
-GET /api/conversations/:id/messages
-POST /api/chat
-POST /api/confirm
-POST /api/plan
-POST /api/tool/execute
+Set PAYPAL_WEBHOOK_ID after creating the webhook in PayPal. Production webhook URL: POST https://YOUR-DOMAIN/api/paypal/webhook. Subscribe to BILLING.SUBSCRIPTION.CREATED, ACTIVATED, UPDATED, SUSPENDED, CANCELLED, EXPIRED and PAYMENT.FAILED events.
 
-Local development can use the x-user-id header. This is NOT production authentication.
+The PayPal client ID is safe for browser SDK initialization; the client secret is server-only. Never commit .env or credentials.
 
-## Environment
+## Storage
 
-OPENROUTER_API_KEY=
-OPENROUTER_MODEL=openrouter/free
-COMPOSIO_API_KEY=
-PORT=3000
+The current zero-infrastructure persistence layer is local JSON under AI_SECRETARY_DATA_DIR. The billing layer is isolated so it can be replaced by Supabase/Postgres without changing the product routes. Multi-instance production should use a shared database before horizontal scaling.
 
-Never commit API keys or .env.
+## Development
 
-## Next layers
+npm install
+npm test
+npm run build
+npm start
 
-1. Exact live Composio schema validation
-2. Persistent database
-3. Real authentication
-4. Connection-management UI
-5. Durable conversation and memory storage
-6. Daily briefings and scheduled workflows
-7. Voice interface
-8. Production deployment
+Local x-user-id development identity is available only when AI_SECRETARY_ALLOW_DEV_IDENTITY=true and must remain false in production.
+
+## Explicitly excluded
+
+Zoom, Microsoft Teams, WhatsApp Business, paid SMS/voice and other paid infrastructure beyond the existing PayPal Pro subscription.
+
+## Routes
+
+Public: /, /health, /api/auth/*, /api/paypal/webhook.
+Authenticated: /api/subscription*.
+Pro: /api/chat, /api/confirm, /api/briefing, /api/connections, /api/conversations/*, /api/memories*, /api/activity, /api/tools and /api/plan.
