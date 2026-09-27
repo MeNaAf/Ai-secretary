@@ -1,5 +1,8 @@
 import { hasActiveSubscription } from "./billing/store.js";
-export function requireActiveSubscription(userId:string){
+import { isBetaTester } from "./beta.js";
+
+export function requireActiveSubscription(userId:string, email?:string){
+  if(isBetaTester(email))return;
   if(hasActiveSubscription(userId))return;
   const error=new Error("AI Secretary Pro subscription required.");
   (error as Error & {statusCode?:number;code?:string}).statusCode=402;
