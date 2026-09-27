@@ -38,3 +38,21 @@ Zoom, Microsoft Teams, WhatsApp Business, paid SMS/voice and other paid infrastr
 Public: /, /health, /api/auth/*, /api/paypal/webhook.
 Authenticated: /api/subscription*.
 Pro: /api/chat, /api/confirm, /api/briefing, /api/connections, /api/conversations/*, /api/memories*, /api/activity, /api/tools and /api/plan.
+
+
+## Netlify deployment
+
+The production frontend and API are deployed to Netlify. Netlify builds the TypeScript server and exposes the API through netlify/functions/api.mjs.
+
+Required production environment variables include:
+- OPENROUTER_API_KEY
+- OPENROUTER_MODEL
+- COMPOSIO_API_KEY
+- PAYPAL_CLIENT_ID
+- PAYPAL_CLIENT_SECRET
+- PAYPAL_PLAN_ID
+- PAYPAL_WEBHOOK_ID
+- APP_ORIGIN=https://aisecratory.netlify.app
+- AI_SECRETARY_ALLOW_DEV_IDENTITY=false
+
+The current MVP storage layer uses local JSON files. This is suitable for local development but should be migrated to a durable production database before scaling across multiple serverless instances.
