@@ -2,57 +2,108 @@
 
 AI-powered personal and SME operations assistant.
 
+## Production stack
+
+- TypeScript + Node 20+
+- Netlify Functions
+- Netlify Database / Postgres for production persistence
+- OpenRouter for the AI layer
+- Composio for external integrations and tool calling
+- PayPal Subscriptions for AI Secretary Pro
+- GitHub Actions for CI
+
 ## Core
 
 Authenticated accounts, OpenRouter tool calling, live Composio schemas, Gmail, Calendar, Drive, Sheets, Slack, Notion, HubSpot and ClickUp integrations, confirmation-gated mutations, conversation history, semantic memory, cross-source briefings, browser voice, and PayPal Pro subscriptions.
 
 ## PayPal Pro
 
-AI Secretary Pro is $25 USD/month on the existing active plan P-8SC10898FX170705XNK4PPNQ. The server obtains PayPal OAuth access tokens, verifies the returned subscription ID against the configured plan and checkout token, persists subscription state, supports cancellation, and verifies PayPal webhooks.
+AI Secretary Pro is $25 USD/month on plan `P-8SC10898FX170705XNK4PPNQ`.
 
-Required variables: OPENROUTER_API_KEY, OPENROUTER_MODEL, COMPOSIO_API_KEY, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_PLAN_ID, PAYPAL_WEBHOOK_ID, PAYPAL_BASE_URL, APP_ORIGIN, PORT, AI_SECRETARY_ALLOW_DEV_IDENTITY, AI_SECRETARY_DATA_DIR.
+Production webhook URL:
 
-Set PAYPAL_WEBHOOK_ID after creating the webhook in PayPal. Production webhook URL: POST https://YOUR-DOMAIN/api/paypal/webhook. Subscribe to BILLING.SUBSCRIPTION.CREATED, ACTIVATED, UPDATED, SUSPENDED, CANCELLED, EXPIRED and PAYMENT.FAILED events.
+`https://aisecratory.netlify.app/api/paypal/webhook`
 
-The PayPal client ID is safe for browser SDK initialization; the client secret is server-only. Never commit .env or credentials.
+The production PayPal webhook ID is stored server-side as `PAYPAL_WEBHOOK_ID`. Webhook verification is performed against PayPal before subscription events are processed, and webhook event IDs are stored for idempotency.
+
+Subscription flow:
+
+1. User starts checkout and receives a short-lived checkout token.
+2. PayPal creates the subscription with that token as `custom_id`.
+3. The server verifies the subscription ID, plan ID and checkout token with PayPal.
+4. The subscription is persisted in Postgres.
+5. PayPal webhook events keep the local subscription status synchronized.
+
+## Private beta
+
+These three configured beta accounts receive Pro access without payment:
+
+- `abduraghmaanltf23@gmail.com`
+- `pregnantassistant@gmail.com`
+- `abdulmenaafpeters2022@gmail.com`
+
+Beta access is controlled server-side and does not bypass authentication.
+
+## Production environment
+
+Required production configuration includes:
+
+- `OPENROUTER_API_KEY`
+- `OPENROUTER_MODEL`
+- `COMPOSIO_API_KEY`
+- `PAYPAL_CLIENT_ID`
+- `PAYPAL_CLIENT_SECRET`
+- `PAYPAL_PLAN_ID`
+- `PAYPAL_WEBHOOK_ID`
+- `AI_SECRETARY_BETA_EMAILS`
+- `APP_ORIGIN=https://aisecratory.netlify.app`
+- `AI_SECRETARY_ALLOW_DEV_IDENTITY=false`
+
+Secrets must be stored in Netlify environment variables, never committed to Git.
 
 ## Storage
 
-The current zero-infrastructure persistence layer is local JSON under AI_SECRETARY_DATA_DIR. The billing layer is isolated so it can be replaced by Supabase/Postgres without changing the product routes. Multi-instance production should use a shared database before horizontal scaling.
+Production application data is persisted in Netlify Database/Postgres, including users, sessions, conversations, messages, activity, memories, confirmations, subscriptions, checkout tokens and PayPal webhook event IDs.
+
+Local development falls back to local JSON/in-memory stores when Netlify Database is unavailable.
+
+## Security
+
+- Passwords use scrypt hashing with per-user salts.
+- Browser sessions use random tokens; production database stores only the derived session key.
+- Session cookies are HttpOnly and SameSite=Lax and are Secure in production.
+- Mutating production requests enforce same-origin checks.
+- Authentication has an in-memory rate limit.
+- Request bodies are capped at 1 MB.
+- Server-side secrets are never sent to the browser.
+- Tool mutations require explicit confirmation.
+- PayPal webhook signatures are verified before processing.
+- Duplicate PayPal webhook event IDs are ignored.
 
 ## Development
 
+```bash
 npm install
 npm test
 npm run build
 npm start
+```
 
-Local x-user-id development identity is available only when AI_SECRETARY_ALLOW_DEV_IDENTITY=true and must remain false in production.
-
-## Explicitly excluded
-
-Zoom, Microsoft Teams, WhatsApp Business, paid SMS/voice and other paid infrastructure beyond the existing PayPal Pro subscription.
+Local `x-user-id` development identity is available only when `AI_SECRETARY_ALLOW_DEV_IDENTITY=true` and must remain false in production.
 
 ## Routes
 
-Public: /, /health, /api/auth/*, /api/paypal/webhook.
-Authenticated: /api/subscription*.
-Pro: /api/chat, /api/confirm, /api/briefing, /api/connections, /api/conversations/*, /api/memories*, /api/activity, /api/tools and /api/plan.
+Public: `/`, `/health`, `/api/auth/*`, `/api/paypal/webhook`.
 
+Authenticated: `/api/subscription*`.
 
-## Netlify deployment
+Pro: `/api/chat`, `/api/confirm`, `/api/briefing`, `/api/connections`, `/api/conversations/*`, `/api/memories*`, `/api/activity`, `/api/tools` and `/api/plan`.
 
-The production frontend and API are deployed to Netlify. Netlify builds the TypeScript server and exposes the API through netlify/functions/api.mjs.
+## Explicitly excluded from MVP
 
-Required production environment variables include:
-- OPENROUTER_API_KEY
-- OPENROUTER_MODEL
-- COMPOSIO_API_KEY
-- PAYPAL_CLIENT_ID
-- PAYPAL_CLIENT_SECRET
-- PAYPAL_PLAN_ID
-- PAYPAL_WEBHOOK_ID
-- APP_ORIGIN=https://aisecratory.netlify.app
-- AI_SECRETARY_ALLOW_DEV_IDENTITY=false
+Zoom, Microsoft Teams, WhatsApp Business, paid SMS/voice and other paid infrastructure beyond the existing PayPal Pro subscription.
 
-The current MVP storage layer uses local JSON files. This is suitable for local development but should be migrated to a durable production database before scaling across multiple serverless instances.
+## Production
+
+Live site: https://aisecratory.netlify.app
+Repository: https://github.com/MeNaAf/Ai-secretary
