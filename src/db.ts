@@ -1,7 +1,12 @@
-import { getDatabase } from "@netlify/database";
+import { getConnectionString,getDatabase } from "@netlify/database";
 
 let dbClient: ReturnType<typeof getDatabase>|null=null;
-try{dbClient=getDatabase()}catch{dbClient=null}
+try{
+  const connectionString=getConnectionString();
+  dbClient=getDatabase({connectionString});
+}catch{
+  try{dbClient=getDatabase()}catch{dbClient=null}
+}
 
 export const productionDatabase=Boolean(dbClient);
 export const db=dbClient;
