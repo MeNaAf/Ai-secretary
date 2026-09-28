@@ -1,69 +1,8 @@
-export type UserProfile = {
-  id: string;
-  email?: string;
-  name?: string;
-  timezone: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type AssistantSession = {
-  id: string;
-  userId: string;
-  composioSessionId?: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type ActivityRecord = {
-  id: string;
-  userId: string;
-  type: "chat" | "tool" | "confirmation" | "briefing";
-  summary: string;
-  toolSlug?: string;
-  status: "started" | "completed" | "confirmation_required" | "failed";
-  createdAt: string;
-};
-
-const users = new Map<string, UserProfile>();
-const sessions = new Map<string, AssistantSession>();
-const activity: ActivityRecord[] = [];
-
-export function getOrCreateUser(userId: string): UserProfile {
-  const existing = users.get(userId);
-  if (existing) return existing;
-
-  const now = new Date().toISOString();
-  const user: UserProfile = {
-    id: userId,
-    timezone: "Africa/Johannesburg",
-    createdAt: now,
-    updatedAt: now
-  };
-
-  users.set(userId, user);
-  return user;
-}
-
-export function getSession(sessionId: string) {
-  return sessions.get(sessionId);
-}
-
-export function saveSession(session: AssistantSession) {
-  sessions.set(session.id, session);
-  return session;
-}
-
-export function addActivity(record: Omit<ActivityRecord, "id" | "createdAt">) {
-  const item: ActivityRecord = {
-    ...record,
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString()
-  };
-  activity.unshift(item);
-  return item;
-}
-
-export function listActivity(userId: string, limit = 50) {
-  return activity.filter((item) => item.userId === userId).slice(0, limit);
-}
+import { db,query } from "../db.js";
+export type UserProfile={id:string;email?:string;name?:string;timezone:string;createdAt:string;updatedAt:string};export type AssistantSession={id:string;userId:string;composioSessionId?:string;createdAt:string;updatedAt:string};export type ActivityRecord={id:string;userId:string;type:"chat"|"tool"|"confirmation"|"briefing";summary:string;toolSlug?:string;status:"started"|"completed"|"confirmation_required"|"failed";createdAt:string};
+const users=new Map<string,UserProfile>(),sessions=new Map<string,AssistantSession>(),activity:ActivityRecord[]=[];
+export async function getOrCreateUser(userId:string){if(db){let rows=await query<UserProfile>('SELECT id,email,name,timezone,created_at AS "createdAt",updated_at AS "updatedAt" FROM users WHERE id=$1 LIMIT 1',[userId]);if(rows[0])return rows[0];const now=new Date().toISOString();await query('INSERT INTO users (id,timezone,created_at,updated_at) VALUES ($1,$2,$3,$3) ON CONFLICT (id) DO NOTHING',[userId,"Africa/Johannesburg",now]);rows=await query<UserProfile>('SELECT id,email,name,timezone,created_at AS "createdAt",updated_at AS "updatedAt" FROM users WHERE id=$1',[userId]);return rows[0]}const existing=users.get(userId);if(existing)return existing;const now=new Date().toISOString(),u={id:userId,timezone:"Africa/Johannesburg",createdAt:now,updatedAt:now};users.set(userId,u);return u}
+export async function getSession(id:string){if(db){const rows=await query<AssistantSession>('SELECT id,user_id AS "userId",created_at AS "createdAt",updated_at AS "updatedAt" FROM assistant_sessions WHERE id=$1 LIMIT 1',[id]);return rows[0]}return sessions.get(id)}
+export async function saveSession(s:AssistantSession){if(db){await query('INSERT INTO assistant_sessions (id,user_id,created_at,updated_at) VALUES ($1,$2,$3,$4) ON CONFLICT (id) DO UPDATE SET updated_at=EXCLUDED.updated_at',[s.id,s.userId,s.createdAt,s.updatedAt]);return s}sessions.set(s.id,s);return s}
+export async function addActivity(r:Omit<ActivityRecord,"id"|"createdAt">){const item={...r,id:crypto.randomUUID(),createdAt:new Date().toISOString()};if(db){await query('INSERT INTO activity (id,user_id,type,summary,tool_slug,status,created_at) VALUES ($1,$2,$3,$4,$5,$6,$7)',[item.id,item.userId,item.type,item.summary,item.toolSlug??null,item.status,item.createdAt]);return item}activity.unshift(item);return item}
+export async function listActivity(userId:string,limit=50){if(db)return await query<ActivityRecord>('SELECT id,user_id AS "userId",type,summary,tool_slug AS "toolSlug",status,created_at AS "createdAt" FROM activity WHERE user_id=$1 ORDER BY created_at DESC LIMIT $2',[userId,Math.min(Math.max(limit,1),100)]);return activity.filter(x=>x.userId===userId).slice(0,limit)}

@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY,email TEXT UNIQUE,password_hash TEXT,salt TEXT,name TEXT,timezone TEXT NOT NULL DEFAULT 'Africa/Johannesburg',created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
+CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,expires_at TIMESTAMPTZ NOT NULL);
+CREATE TABLE IF NOT EXISTS assistant_sessions (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,created_at TIMESTAMPTZ NOT NULL,updated_at TIMESTAMPTZ NOT NULL);
+CREATE TABLE IF NOT EXISTS activity (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,type TEXT NOT NULL,summary TEXT NOT NULL,tool_slug TEXT,status TEXT NOT NULL,created_at TIMESTAMPTZ NOT NULL);
+CREATE INDEX IF NOT EXISTS activity_user_time_idx ON activity(user_id,created_at DESC);
+CREATE TABLE IF NOT EXISTS conversations (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,title TEXT,created_at TIMESTAMPTZ NOT NULL,updated_at TIMESTAMPTZ NOT NULL);
+CREATE INDEX IF NOT EXISTS conversations_user_time_idx ON conversations(user_id,updated_at DESC);
+CREATE TABLE IF NOT EXISTS messages (id TEXT PRIMARY KEY,conversation_id TEXT NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,role TEXT NOT NULL,content TEXT NOT NULL,tool_call_id TEXT,created_at TIMESTAMPTZ NOT NULL);
+CREATE INDEX IF NOT EXISTS messages_conversation_time_idx ON messages(conversation_id,created_at ASC);
+CREATE TABLE IF NOT EXISTS pending_confirmations (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,conversation_id TEXT NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,tool_slug TEXT NOT NULL,arguments JSONB NOT NULL,session_id TEXT,expires_at TIMESTAMPTZ NOT NULL);
+CREATE TABLE IF NOT EXISTS semantic_memories (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,text TEXT NOT NULL,created_at TIMESTAMPTZ NOT NULL,updated_at TIMESTAMPTZ NOT NULL);
+CREATE INDEX IF NOT EXISTS semantic_memories_user_idx ON semantic_memories(user_id,updated_at DESC);
+CREATE TABLE IF NOT EXISTS subscriptions (paypal_subscription_id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,paypal_plan_id TEXT NOT NULL,status TEXT NOT NULL,start_time TIMESTAMPTZ,next_billing_time TIMESTAMPTZ,status_update_time TIMESTAMPTZ,subscriber_email TEXT,created_at TIMESTAMPTZ NOT NULL,updated_at TIMESTAMPTZ NOT NULL);
+CREATE INDEX IF NOT EXISTS subscriptions_user_time_idx ON subscriptions(user_id,updated_at DESC);
+CREATE TABLE IF NOT EXISTS checkout_tokens (token TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,created_at TIMESTAMPTZ NOT NULL,expires_at TIMESTAMPTZ NOT NULL,consumed_at TIMESTAMPTZ);
+CREATE TABLE IF NOT EXISTS paypal_webhook_events (event_id TEXT PRIMARY KEY,received_at TIMESTAMPTZ NOT NULL);
