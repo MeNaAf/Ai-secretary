@@ -1,37 +1,28 @@
-import { getConnectionString, getDatabase } from "@netlify/database";
+import { Pool } from "pg";
 
-let dbClient: ReturnType<typeof getDatabase> | null = null;
+const connectionString = (
+  process.env.DATABASE_URL ??
+  process.env.NETLIFY_DB_URL ??
+  ""
+).trim();
 
-function resolveConnectionString() {
-  const envUrl = process.env.NETLIFY_DB_URL?.trim();
-  if (envUrl) return envUrl;
+export const db = connectionString
+  ? new Pool({
+      connectionString,
+      max: Number(process.env.DB_POOL_MAX ?? 5),
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
+      ssl: process.env.DB_SSL === "false" ? false : { rejectUnauthorized: false },
+    })
+  : null;
 
-  try {
-    return getConnectionString();
-  } catch {
-    return "";
-  }
-}
-
-try {
-  const connectionString = resolveConnectionString();
-
-  // Netlify Functions run through Lambda compatibility in this project.
-  // In that runtime Netlify recommends passing the connection string explicitly.
-  dbClient = connectionString
-    ? getDatabase({ connectionString })
-    : getDatabase();
-} catch {
-  dbClient = null;
-}
-
-export const productionDatabase = Boolean(dbClient);
-export const db = dbClient;
+export const productionDatabase = Boolean(db);
 
 export async function query<T = Record<string, unknown>>(
   sql: string,
   params: unknown[] = [],
 ): Promise<T[]> {
   if (!db) throw new Error("Production database is not configured.");
-  return (await db.sql.unsafe(sql, params)) as T[];
+  const result = await db.query(sql, params);
+  return result.rows as T[];
 }
