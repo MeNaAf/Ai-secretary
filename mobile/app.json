@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "AI Secretary",
+    "slug": "ai-secretary",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.aisecretary.app",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.aisecretary.app"
+    },
+    "runtimeVersion": { "policy": "appVersion" }
+  }
+}
