@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calendar Monitor — AI Secretary</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#171717;background:#f6f6f3;line-height:1.45}
+body{margin:0;padding:24px 16px}
+main{max-width:1100px;margin:0 auto}
+h1{margin:0 0 4px}h2{margin:28px 0 8px;font-size:1.05rem}
+.muted{color:#666;font-size:.9rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.card{background:#fff;border:1px solid #e3e3dd;border-radius:12px;padding:14px}
+.card b{display:block;font-size:1.3rem}
+.table-wrap{overflow-x:auto;background:#fff;border:1px solid #e3e3dd;border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #eee;vertical-align:top}
+th{background:#fafaf7;font-weight:600}
+.badge{display:inline-block;padding:1px 8px;border-radius:99px;font-size:.75rem;font-weight:600;background:#eee}
+.demo{background:#fde68a;color:#78350f}.ok{background:#bbf7d0;color:#14532d}.bad{background:#fecaca;color:#7f1d1d}
+button{font:inherit;cursor:pointer;border:1px solid #bbb;background:#fff;border-radius:8px;padding:3px 10px}
+#msg{margin:16px 0;padding:10px 12px;border-radius:8px;background:#fff;border:1px solid #e3e3dd}
+</style>
+</head>
+<body>
+<main>
+<h1>Calendar Monitor</h1>
+<p class="muted">Licensed economic-calendar updates, change detection and alert delivery. Rows marked DEMO are simulated and are not live market data.</p>
+<div id="msg" role="status">Loading…</div>
+<div class="cards" id="cards"></div>
+<h2>Provider connection status</h2><div class="table-wrap"><table id="providers"></table></div>
+<h2>Failed notifications</h2><div class="table-wrap"><table id="failed"></table></div>
+<h2>New and updated events (latest alerts)</h2><div class="table-wrap"><table id="changes"></table></div>
+<h2>Latest events</h2><div class="table-wrap"><table id="events"></table></div>
+</main>
+<script src="/admin.js"></script>
+</body>
+</html>

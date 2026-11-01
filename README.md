@@ -61,6 +61,23 @@ Required production configuration includes:
 
 Secrets must be stored in Netlify environment variables, never committed to Git.
 
+## Calendar monitor (Apex MI)
+
+A notification engine for **licensed** economic-calendar data. It does not scrape Forex Factory or any other site, and ships with no live data connection: you must connect a provider whose licence permits your use and any redistribution.
+
+Flow: provider/automation `POST /api/calendar/webhook` (HMAC-signed) → normalise → store in Postgres → detect new/changed events → queue one alert per distinct event state → deliver to n8n (`APEX_ALERT_WEBHOOK_URL`) with retries.
+
+- **Auth:** `x-apex-signature` = hex HMAC-SHA256 of the raw body using `APEX_WEBHOOK_SECRET`. Unsigned/invalid requests get 401.
+- **Payload:** `{ "source": "my-provider", "events": [{ "event_id", "event_name", "country", "currency", "impact", "event_time", "forecast", "previous", "actual", "source_url" }] }`. A single event object is also accepted. Use `registerAdapter(source, adapter)` in `src/calendar/adapters.ts` to translate a provider's native format.
+- **No duplicate alerts:** the alert queue is unique on (event, content fingerprint) and change detection runs in a row-locked transaction, so concurrent identical updates produce one alert.
+- **Delivery:** at-least-once. Each alert carries a stable `x-apex-notification-id` (dedupe on this in n8n) and is signed with the same secret. Failures back off exponentially (30s, 60s, ... up to 1h) and become `dead` after 5 attempts. Retry from the dashboard, or have n8n schedule `POST /api/calendar/dispatch` (signed, empty `{}` body) to drain the queue.
+- **Demo data:** sources starting with `demo` (or payloads with `"demo": true`) are stored with `is_demo`, shown as DEMO in the dashboard and sent with `data_status: "demo"`.
+- **Dashboard:** `/admin.html`, available to signed-in users listed in `AI_SECRETARY_ADMIN_EMAILS`. Shows latest events, new/updated alerts, last successful update, provider status and failed notifications.
+- **Database:** `netlify/database/migrations/002_market_events/migration.sql` (plain Postgres, not Supabase).
+- **Test:** `APEX_WEBHOOK_SECRET=... node scripts/test-calendar-webhook.mjs http://localhost:3000` expects new, unchanged, updated, then 401.
+
+n8n workflow: Webhook trigger → Switch on `type` (`new_event` / `event_updated`) → AI step to explain the event in plain language (use `data_status` to label demo data) → send via WhatsApp/email/Telegram.
+
 ## Storage
 
 Production application data is persisted in Netlify Database/Postgres, including users, sessions, conversations, messages, activity, memories, confirmations, subscriptions, checkout tokens and PayPal webhook event IDs.
