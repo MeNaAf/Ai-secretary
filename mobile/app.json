@@ -12,6 +12,17 @@
     "android": {
       "package": "com.aisecretary.app"
     },
-    "runtimeVersion": { "policy": "appVersion" }
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "owner": "apexdigitalsa.co.za",
+    "extra": {
+      "eas": {
+        "projectId": "3d53b0ab-4fcd-41d9-8aa8-c74dadee3fdd"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3d53b0ab-4fcd-41d9-8aa8-c74dadee3fdd"
+    }
   }
 }
