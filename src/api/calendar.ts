@@ -12,11 +12,27 @@ function send(res: ServerResponse, status: number, body: unknown) {
   res.end(JSON.stringify(body));
 }
 
-export function validSignature(raw: string, header: string | string[] | undefined, secret: string | undefined) {
+export const TIMESTAMP_TOLERANCE_MS = 5 * 60 * 1000;
+
+/**
+ * Without a timestamp the signature covers the raw body. With `x-apex-timestamp` (unix seconds or ms)
+ * it covers `${timestamp}.${body}` and must be fresh, which stops replay of captured requests.
+ * APEX_REQUIRE_TIMESTAMP=true rejects requests that omit it.
+ */
+export function validSignature(raw: string, header: string | string[] | undefined, secret: string | undefined, timestamp?: string | string[], now = Date.now()) {
   if (!secret || typeof header !== "string") return false;
   const supplied = header.trim().replace(/^sha256=/i, "");
   if (!/^[0-9a-f]{64}$/i.test(supplied)) return false;
-  return timingSafeEqual(Buffer.from(supplied.toLowerCase(), "hex"), Buffer.from(signBody(raw, secret), "hex"));
+  let signed = raw;
+  if (typeof timestamp === "string" && timestamp !== "") {
+    if (!/^\d{10,13}$/.test(timestamp)) return false;
+    const ms = timestamp.length <= 10 ? Number(timestamp) * 1000 : Number(timestamp);
+    if (Math.abs(now - ms) > TIMESTAMP_TOLERANCE_MS) return false;
+    signed = `${timestamp}.${raw}`;
+  } else if (process.env.APEX_REQUIRE_TIMESTAMP === "true") {
+    return false;
+  }
+  return timingSafeEqual(Buffer.from(supplied.toLowerCase(), "hex"), Buffer.from(signBody(signed, secret), "hex"));
 }
 
 /** Public (HMAC-authenticated) routes: POST /api/calendar/webhook and POST /api/calendar/dispatch. */
@@ -26,7 +42,7 @@ export async function calendarWebhookResponse(req: IncomingMessage, res: ServerR
   const secret = process.env.APEX_WEBHOOK_SECRET;
   if (!secret) return send(res, 503, { error: "APEX_WEBHOOK_SECRET is not configured." }), true;
   const raw = await readBody(req);
-  if (!validSignature(raw, req.headers["x-apex-signature"], secret)) return send(res, 401, { error: "Invalid signature." }), true;
+  if (!validSignature(raw, req.headers["x-apex-signature"], secret, req.headers["x-apex-timestamp"])) return send(res, 401, { error: "Invalid signature." }), true;
 
   // Lets n8n (or any scheduler) drain the retry queue.
   if (path === "/api/calendar/dispatch") return send(res, 200, { ok: true, ...(await dispatchNotifications(20)) }), true;

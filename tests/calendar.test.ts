@@ -32,6 +32,23 @@ test("signature check accepts correct HMAC and rejects bad, missing and malforme
   assert.equal(validSignature(raw, good, undefined), false);
 });
 
+test("timestamped signatures: fresh accepted, stale/tampered/unsigned-timestamp rejected, required mode enforced", () => {
+  const raw = '{"a":1}';
+  const now = Date.now();
+  const ts = String(Math.floor(now / 1000));
+  const sig = (t: string) => createHmac("sha256", "test-secret").update(`${t}.${raw}`).digest("hex");
+  assert.equal(validSignature(raw, sig(ts), "test-secret", ts, now), true);
+  const stale = String(Math.floor(now / 1000) - 600);
+  assert.equal(validSignature(raw, sig(stale), "test-secret", stale, now), false);
+  assert.equal(validSignature(raw, sig(ts), "test-secret", String(Number(ts) + 1), now), false);
+  const bodyOnly = createHmac("sha256", "test-secret").update(raw).digest("hex");
+  assert.equal(validSignature(raw, bodyOnly, "test-secret", ts, now), false);
+  process.env.APEX_REQUIRE_TIMESTAMP = "true";
+  assert.equal(validSignature(raw, bodyOnly, "test-secret", undefined, now), false);
+  assert.equal(validSignature(raw, sig(ts), "test-secret", ts, now), true);
+  delete process.env.APEX_REQUIRE_TIMESTAMP;
+});
+
 test("new, unchanged and updated events are detected", async () => {
   assert.equal((await ingest())[0].status, "new");
   assert.equal((await ingest())[0].status, "unchanged");

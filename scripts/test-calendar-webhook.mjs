@@ -11,8 +11,9 @@ const base = process.argv[2] ?? "http://localhost:3000";
 
 async function send(label, payload) {
   const body = JSON.stringify(payload);
-  const signature = createHmac("sha256", secret).update(body).digest("hex");
-  const res = await fetch(`${base}/api/calendar/webhook`, { method: "POST", headers: { "content-type": "application/json", "x-apex-signature": signature }, body });
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  const signature = createHmac("sha256", secret).update(`${timestamp}.${body}`).digest("hex");
+  const res = await fetch(`${base}/api/calendar/webhook`, { method: "POST", headers: { "content-type": "application/json", "x-apex-signature": signature, "x-apex-timestamp": timestamp }, body });
   console.log(`${label}: HTTP ${res.status}`, JSON.stringify(await res.json()));
 }
 
