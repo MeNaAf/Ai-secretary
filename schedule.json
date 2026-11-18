@@ -1,0 +1,832 @@
+[
+ {
+  "date": "2026-11-18",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 2,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day02-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day02-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day02-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day02-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day02-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"I'm 10 minutes away.\" Your plumber, three hours ago.\n\nTell us your worst \"I'm on my way\" story.\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-19",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 3,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nBest mechanic in the area. Nobody past three streets knows.\n\nWhere did your last five customers come from? Be honest.\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-19",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 3,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day03-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nAsked the community group for an electrician. Got 43 comments.\n\nHow do you choose from the comments? Asking for everyone.\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-20",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 4,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"Can you do it for R200?\" The price is R450.\n\nWhat's the wildest counter-offer a client has made you?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-20",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 4,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day04-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nSame job. Your neighbour paid half.\n\nEver compared a quote with a neighbour? What happened?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-21",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 5,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nSaturday: queue down the road. Tuesday: three cars.\n\nWhat's your deadest day of the week?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-21",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 5,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day05-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nThree barbers this morning. All full.\n\nHow long did you wait for your last cut?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-22",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 6,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nYou do the work. The app keeps a slice.\n\nWould you rather pay a cut per job or one fixed fee? Why?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-22",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 6,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day06-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nNew suburb. You don't know a single plumber, mechanic or hairdresser.\n\nWhat was the first service you had to find after moving?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-23",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 7,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nPaid for the lead. The customer never picked up.\n\nDo paid leads work for you? Honest answers only.\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-23",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 7,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day07-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nCalled five. Two rang out, two voicemail, one said \"send a WhatsApp.\"\n\nWho actually answers their phone any more? Tag them. They deserve it.\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-24",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 8,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"Sorry babe, can't make it.\" Sent 20 minutes before.\n\nHow much notice is fair? Two hours? Twenty-four?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-24",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 8,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day08-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nHe wanted 50% upfront. You paid. Then his phone went quiet.\n\nDo you pay deposits? What makes you trust someone enough?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-25",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 9,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nThe 25th: fully booked. The 10th: silence.\n\nWhich week of the month is your worst?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-25",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 9,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day09-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nPayday. You want one nice thing. Now try to find out what it costs.\n\nWhat's your payday treat, and how did you find the place?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-26",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 10,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nEveryone's shouting 50% off. You sell your own two hands.\n\nDo you run Black Friday specials? Does it actually pay?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-26",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 10,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day10-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n4.9 stars. Twelve reviews. Nine with the same surname.\n\nHow do you tell a real review from a favour?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-27",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 11,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nThis weekend people buy TVs, taps and gate motors. They need you. They can't find you.\n\nWhat do customers buy and then phone you about in a panic?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-27",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 11,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day11-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nBlack Friday sorted the TV. Who's mounting it?\n\nWhat have you bought that's still waiting for someone to install it?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-28",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 12,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nTwo functions. Same Saturday. One diary, and it's in your head.\n\nEver double-booked? How did you get out of it?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-28",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 12,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day12-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nParty in two weeks. Seven tabs open. Zero prices.\n\nWhat's the hardest thing to book for a party?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-29",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 13,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nExams end. So does your income.\n\nTutors, how do you get through December and January?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-29",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 13,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day13-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nYour child needs a maths tutor. Every one you know is \"full.\"\n\nHow did you find your child's tutor?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-30",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 14,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"I'll EFT you tonight.\" That was Thursday.\n\nWhat's your line for chasing a late payer without losing the client?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-11-30",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 14,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day14-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nThe car makes a noise. You know nothing about cars. The mechanic knows you know nothing.\n\nHow did you find a mechanic you actually trust?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-01",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 15,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n1 December: the phone won't stop. 10 January: it won't ring.\n\nHow many people did you turn away last December?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-01",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 15,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day15-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nIt's 1 December and your hairdresser is \"fully booked till the 24th.\"\n\nDid you book your December hair in time? Be honest.\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-02",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 16,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nFirst hot weekend. Fourteen \"my pool is green\" messages before 8am.\n\nHow do you decide who gets helped first?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-02",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 16,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day16-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nFamily arrives Friday. The pool is the colour of pesto.\n\nWho rescued your pool last summer?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-03",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 17,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nDrove out. Measured. Quoted. Silence.\n\nDo you charge for quotes? Should you?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-03",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 17,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day17-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nThree quotes for the same job. One is nearly five times another.\n\nDo you take the cheapest, the middle, or the one who explained it best?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-04",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 18,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nNew client. New address. Nobody knows where you are.\n\nWhat's your safety rule for a first-time client?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-04",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 18,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day18-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nA stranger from a Facebook comment is coming to your house at two.\n\nWhat do you check before you let someone in to work?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-05",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 19,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"He's just a bit knotty.\" He is one solid carpet.\n\nGroomers, what's the biggest gap between the booking and the dog?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-05",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 19,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day19-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nYou leave on the 15th. Every kennel says full.\n\nWho looks after your pets in December?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-06",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 20,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"Turn at the blue gate, pass the spaza, call me when you see the taxi rank.\"\n\nHow do new customers find your place?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-06",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 20,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day20-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nOnline it said open till five. The gate was locked at two.\n\nWhat's the furthest you've driven to a place that turned out closed?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-07",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 21,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nYou're registered, insured and compliant. He's R300 cheaper with a bakkie.\n\nHow do you explain your price to a customer comparing you with a cheaper guy?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-07",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 21,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day21-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nHe says he's a qualified electrician. How would you even check?\n\nHave you ever asked a tradesperson for proof they're qualified?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-08",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 22,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"Can you do 80 samoosas for tomorrow?\" Sent at 21:47.\n\nWhat's your cut-off for orders, and do you actually stick to it?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-08",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 22,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day22-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nIt's 7pm. You need it by tomorrow. Who's even open?\n\nWhat's the most last-minute thing you've ever had to organise?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-09",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 23,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nChair rent. Products. Data. Card fees. Then the app wants a cut too.\n\nWhat's the cost that hurts most every month?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-09",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 23,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day23-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nBurning data to scroll someone's highlights for a price list from 2023.\n\nWhere do you look first for a price: Instagram, a search, or a friend?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-10",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 24,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nEveryone drives to the coast on the 15th. Everyone wants a service on the 14th.\n\nWhen should people really book a pre-holiday service?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-10",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 24,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day24-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nRoad trip in five days. The car has been \"making a noise\" since August.\n\nHave you had the car checked for the trip? No judgement.\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-11",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 25,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nClose for two weeks and lose the rush. Or work through and miss your family.\n\nAre you closing this December? For how long?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-11",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 25,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day25-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nThe geyser bursts on the 27th. Everyone is \"closed till the 6th.\"\n\nWhat broke on you over a holiday? How did you sort it?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-12",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 26,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\n\"We can't pay, but we'll tag you.\"\n\nHow do you answer the \"we'll tag you\" request?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-12",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 26,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day26-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nWedding in a town you've never been to. Who does your hair there?\n\nHow do you find a stylist when you're away from home?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-13",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 27,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nPosted at 11pm, because that's the only time you're not working.\n\nWhich of your four jobs would you hand over first?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-13",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 27,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-customer/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day27-customer/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nYour mom's tap is leaking. She's in Gqeberha. You're in Joburg.\n\nHow do you organise help for a parent in another city?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-14",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 28,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nDecember pays for December. Who pays for January?\n\nHow do you get your business through January?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-14",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 28,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day28-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nJanuary: school shoes, stationery, fees. And that's when the geyser picks its moment.\n\nWhat's the January expense that always catches you?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-15",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 29,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-business/04-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-business/05-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nBought the equipment. Printed the cards. Where are the customers?\n\nHow did you get your first customer who wasn't family?\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-15",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 29,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day29-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nYou'd rather pay the guy down the road than a big chain. You just don't know he exists.\n\nWhich small local business do you wish more people knew about?\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-16",
+  "slot": "morning",
+  "time_sast": "06:47",
+  "day": 30,
+  "audience": "business",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-business/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-business/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-business/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-business/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nBusiness owners: what was the hardest part of this year?\n\nOne sentence: the hardest part of your year in business.\n\n#smallbusinesssa #mzansibusiness #sidehustlesa #fresha #proudlysouthafrican"
+ },
+ {
+  "date": "2026-12-16",
+  "slot": "evening",
+  "time_sast": "19:47",
+  "day": 30,
+  "audience": "customer",
+  "images": [
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-customer/01-opener.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-customer/02-hook.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-customer/03-body.jpg",
+   "https://raw.githubusercontent.com/MeNaAf/Ai-secretary/servicesnearby-ig/day30-customer/04-question.jpg"
+  ],
+  "caption": "We're taking over Fresha. Built by South Africa, for South Africa.\n\nWhat was the hardest service to find this year?\n\nService and suburb. Go.\n\n#southafrica #mzansi #sarelatable #fresha #proudlysouthafrican"
+ }
+]
